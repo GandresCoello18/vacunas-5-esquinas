@@ -4,3 +4,12 @@ export interface MyUser {
   email: string;
   photoURL: string;
 }
+
+export interface Paciente {
+  id_paciente: string;
+  nombres: string;
+  apellidos: string;
+  peso: number;
+  altura: number;
+  codigo?: string;
+}

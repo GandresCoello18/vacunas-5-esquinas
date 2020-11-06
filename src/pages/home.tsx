@@ -1,10 +1,10 @@
-import { Row, Col, Divider, DatePicker } from "antd";
+import { Row, Col, Divider } from "antd";
 import React from "react";
 import { CommentDiscucion } from "../component/discuciones/coment-disccion";
 import { FromDiscucion } from "../component/discuciones/form-discucion";
 import { ListDiscucionCantidad } from "../component/discuciones/list-discucion-cantidad";
-import { LineGrafico } from "../component/graficos/line";
-import { PastelGrafico } from "../component/graficos/pastel";
+import { LineGraficoPeso } from "../component/graficos/line-peso";
+import { LineGraficoAltura } from "../component/graficos/line-altura";
 import { Layout } from "../component/layout";
 
 export function HomePage() {
@@ -21,26 +21,16 @@ export function HomePage() {
     <>
       <Layout head_title="Inicio">
         <Row justify="space-around">
-          <Col xs={24} md={15} style={styles.box}>
+          <Col xs={24} md={11} style={styles.box}>
             <br />
-            <Row>
-              <Col span="3">
-                <h3>Datos vacunas:</h3>
-              </Col>
-              <Col span="4">
-                <DatePicker
-                  placeholder="Selecionar fecha"
-                  onChange={(date, dateString) => console.log(dateString)}
-                />
-              </Col>
-            </Row>
+            <h3>Peso en KLG: tendencia de crecimiento</h3>
             <Divider />
-            <LineGrafico />
+            <LineGraficoPeso />
           </Col>
-          <Col xs={12} md={7} style={styles.box}>
-            <h3>Datos vacunas:</h3>
+          <Col xs={12} md={11} style={styles.box}>
+            <h3>Altura en CM: tendencia de crecimiento</h3>
             <Divider />
-            <PastelGrafico />
+            <LineGraficoAltura />
           </Col>
         </Row>
 

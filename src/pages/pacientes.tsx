@@ -16,7 +16,7 @@ export function PacientesPage() {
         {params.render === "reportes" && "reportes"}
         {params.render === "ingreso" && <IngresoPaciente />}
         {params.render === "representate" && "representate"}
-        {params.render === "estadisticas" ? "estadisticas" : "ninguno"}
+        {params.render === "estadisticas" && "estadisticas"}
       </Layout>
     </>
   );
