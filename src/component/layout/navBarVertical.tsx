@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
 import {
-  MailOutlined,
-  AppstoreOutlined,
+  UserAddOutlined,
+  MedicineBoxOutlined,
+  LayoutOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const { SubMenu } = Menu;
 
 export function NavBarVertical() {
-  const [theme, setTheme] = useState<string | any>("dark");
-  const [current] = useState<string>("1");
-  // setCurrent
-  const handleClick = (e: any) => {
-    console.log("click ", e);
-    setTheme(e.key);
-  };
+  const [theme] = useState<string | any>("dark");
+  const [current, setCurrent] = useState<string>("darshboard");
+
+  const handleClick = (e: any) => setCurrent(e.key);
 
   return (
     <>
@@ -27,19 +26,24 @@ export function NavBarVertical() {
         selectedKeys={[current]}
         mode="inline"
       >
-        <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
-          <Menu.Item key="1">Option 1</Menu.Item>
-          <Menu.Item key="2">Option 2</Menu.Item>
-          <Menu.Item key="3">Option 3</Menu.Item>
-          <Menu.Item key="4">Option 4</Menu.Item>
+        <Menu.Item icon={<LayoutOutlined />} key="darshboard">
+          <Link to="/">Inicio</Link>
+        </Menu.Item>
+        <SubMenu key="sub1" icon={<UserAddOutlined />} title="Pacientes">
+          <Menu.Item key="1">Reportes</Menu.Item>
+          <Menu.Item key="2">
+            <Link to="/pacientes/ingreso">Ingresar nuevo</Link>
+          </Menu.Item>
+          <Menu.Item key="3">Representante</Menu.Item>
+          <Menu.Item key="4">Estadisticas</Menu.Item>
         </SubMenu>
-        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
-          <Menu.Item key="5">Option 5</Menu.Item>
-          <Menu.Item key="6">Option 6</Menu.Item>
-          <SubMenu key="sub3" title="Submenu">
-            <Menu.Item key="7">Option 7</Menu.Item>
-            <Menu.Item key="8">Option 8</Menu.Item>
-          </SubMenu>
+        <SubMenu key="sub2" icon={<MedicineBoxOutlined />} title="Vacunas">
+          <Menu.Item key="5">
+            <Link to="/vacunas/reporte">Reportes</Link>
+          </Menu.Item>
+          <Menu.Item key="6">
+            <Link to="/vacunas/calendario">Calendario</Link>
+          </Menu.Item>
         </SubMenu>
         <SubMenu key="sub4" icon={<SettingOutlined />} title="Navigation Three">
           <Menu.Item key="9">Option 9</Menu.Item>

@@ -3,8 +3,10 @@ import { Head } from "../component/layout/head";
 import { Row, Col, Button, Input, Form, message, Alert, Spin } from "antd";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { doGoogleLoginAction, loGOutSession } from "../redux/modulos/session";
+import { doGoogleLoginAction } from "../redux/modulos/session";
 import { Dispatch } from "../redux";
+import { loginWithGoogle } from "../firebase/firebase";
+import Cookies from "js-cookie";
 
 export function LoginPage() {
   const [codeVerifi, setCodeVerifi] = useState<boolean>(false);
@@ -58,8 +60,15 @@ export function LoginPage() {
     setIsLoading(true);
 
     try {
-      const auth: any = dispatch(doGoogleLoginAction());
-      console.log(auth);
+      loginWithGoogle()
+        .then((user) => {
+          dispatch(doGoogleLoginAction(user));
+          Cookies.set("id-user", user.uid);
+          history.push("/");
+        })
+        .catch((err) => {
+          message.error(err.message);
+        });
 
       setIsLoading(false);
     } catch (error) {

@@ -1,7 +1,5 @@
-import { loginWithGoogle, signOutGoogle } from "../../firebase/firebase";
 import { Dispatch } from "redux";
 import { MyUser } from "../../interface";
-import Cookies from "js-cookie";
 
 export interface initialData {
   MyUser: MyUser;
@@ -48,45 +46,26 @@ export default function reducer(state = initialData, action: any) {
   }
 }
 
-// aux
-
-function saveStorage(storage: any) {
-  Cookies.set("id-user", storage.uid);
-}
-
 // actiones
 
 export const loGOutSession = () => (dispatch: Dispatch) => {
-  signOutGoogle();
   dispatch({
     type: LOG_OUT,
   });
 };
 
-export const doGoogleLoginAction = () => (
-  dispatch: Dispatch,
-  getState: any
-) => {
+export const doGoogleLoginAction = (user: MyUser) => (dispatch: Dispatch) => {
   dispatch({
     type: LOGIN,
   });
-  return loginWithGoogle()
-    .then((user) => {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: {
-          uid: user.uid,
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-        },
-      });
-      saveStorage(user);
-    })
-    .catch((err) => {
-      dispatch({
-        type: ERROR_LOGIN,
-        payload: err.message,
-      });
-    });
+
+  dispatch({
+    type: LOGIN_SUCCESS,
+    payload: {
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+    },
+  });
 };

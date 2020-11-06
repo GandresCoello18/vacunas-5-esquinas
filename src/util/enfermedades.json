@@ -1,0 +1,100 @@
+[
+  {
+    "enfermedad": "Varicela",
+    "vacuna": "La vacuna contra la varicela protege contra esta enfermedad.",
+    "trasmision": "La vacuna contra la varicela protege contra esta enfermedad.",
+    "sintomas": "Sarpullido, cansancio, dolor de cabeza, fiebre",
+    "complicaciones": "Ampollas infectadas, trastornos hemorrágicos, encefalitis (inflamación del cerebro), neumonía (infección en los pulmones)"
+  },
+  {
+    "enfermedad": "Difteria",
+    "vacuna": "La vacuna DTaP* protege contra la difteria.",
+    "trasmision": "Aire, contacto directo",
+    "sintomas": "Dolor de garganta, fiebre moderada, debilidad, inflamación de los ganglios del cuello",
+    "complicaciones": "Inflamación del músculo cardiaco, insuficiencia cardiaca, coma, parálisis, muerte"
+  },
+  {
+    "enfermedad": "Hib",
+    "vacuna": "La vacuna contra Hib protege contra la Haemophilus influenzae tipo b.",
+    "trasmision": "Aire, contacto directo",
+    "sintomas": "Puede no causar síntomas a menos que la bacteria entre en la sangre",
+    "complicaciones": "Meningitis (infección de las membranas que recubren el cerebro y la médula espinal), discapacidad intelectual, epiglotitis (infección que puede ser mortal, que puede bloquear la tráquea y causar problemas respiratorios graves), neumonía (infección en los pulmones), muerte"
+  },
+  {
+    "enfermedad": "Hepatitis A",
+    "vacuna": "La vacuna HepA protege contra la hepatitis A.",
+    "trasmision": "Contacto directo, comida o agua contaminada",
+    "sintomas": "Puede no causar síntomas. Fiebre, dolor de estómago, pérdida del apetito, cansancio, vómito, ictericia (coloración amarilla de la piel y los ojos), orina oscura",
+    "complicaciones": "Insuficiencia hepática, artralgia (dolor en las articulaciones) y trastornos de los riñones, del páncreas y de la sangre"
+  },
+  {
+    "enfermedad": "Hepatitis B",
+    "vacuna": "La vacuna HepB protege contra la hepatitis B.",
+    "trasmision": "Contacto con sangre o líquidos corporales",
+    "sintomas": "Puede no causar síntomas. Fiebre, dolor de cabeza, debilidad, vómito, ictericia (coloración amarilla de los ojos y la piel), dolor en las articulaciones",
+    "complicaciones": "Infección crónica del hígado, insuficiencia hepática, cáncer de hígado"
+  },
+  {
+    "enfermedad": "Influenza (gripe)",
+    "vacuna": "La vacuna contra la influenza protege contra esta enfermedad.",
+    "trasmision": "Aire, contacto directo",
+    "sintomas": "Fiebre, dolor muscular, dolor de garganta, tos, cansancio extremo",
+    "complicaciones": "Neumonía (infección de los pulmones)"
+  },
+  {
+    "enfermedad": "Sarampión",
+    "vacuna": "La vacuna MMR** protege contra el sarampión.",
+    "trasmision": "Aire, contacto directo",
+    "sintomas": "Sarpullido, fiebre, tos, moqueo, conjuntivitis",
+    "complicaciones": "Encefalitis (inflamación del cerebro), neumonía (infección en los pulmones), muerte"
+  },
+  {
+    "enfermedad": "Paperas",
+    "vacuna": "La vacuna MMR**protege contra las paperas.",
+    "trasmision": "Aire, contacto directo",
+    "sintomas": "Inflamación de glándulas salivales (debajo de la mandíbula), fiebre, dolor de cabeza, cansancio, dolor muscular",
+    "complicaciones": "Meningitis (infección de las membranas que recubren el cerebro y la médula espina), encefalitis (inflamación del cerebro), inflamación de los testículos o los ovarios, sordera"
+  },
+  {
+    "enfermedad": "Tosferina",
+    "vacuna": "La vacuna DTaP* protege contra la tosferina (pertussis).",
+    "trasmision": "Aire, contacto directo",
+    "sintomas": "Tos intensa, moqueo, apnea (interrupción de la respiración en los bebés)",
+    "complicaciones": "Neumonía (infección en los pulmones), muerte"
+  },
+  {
+    "enfermedad": "Poliomielitis",
+    "vacuna": "La vacuna IPV protege contra la poliomielitis.",
+    "trasmision": "Aire, contacto directo, por la boca",
+    "sintomas": "Puede no causar síntomas. Dolor de garganta, fiebre, náuseas, dolor de cabeza",
+    "complicaciones": "Parálisis, muerte"
+  },
+  {
+    "enfermedad": "Vacuna",
+    "vacuna": "La vacuna PCV13 protege contra la infección neumocócica.",
+    "trasmision": "Aire, contacto directo",
+    "sintomas": "Puede no causar síntomas. Neumonía (infección en los pulmones)",
+    "complicaciones": "Bacteriemia (infección en la sangre), meningitis (infección de las membranas que recubren el cerebro y la médula espinal), muerte"
+  },
+  {
+    "enfermedad": "Rotavirus",
+    "vacuna": "La vacuna RV protege contra el rotavirus.",
+    "trasmision": "Por la boca",
+    "sintomas": "Diarrea, fiebre, vómito",
+    "complicaciones": "Diarrea intensa, deshidratación"
+  },
+  {
+    "enfermedad": "Rubéola",
+    "vacuna": "La vacuna MMR** protege contra la rubéola.",
+    "trasmision": "Aire, contacto directo",
+    "sintomas": "A veces sarpullido, fiebre, inflamación de los ganglios linfáticos",
+    "complicaciones": "Muy grave en las mujeres embarazadas: Puede causar aborto espontáneo, muerte fetal, parto prematuro, defectos de nacimiento"
+  },
+  {
+    "enfermedad": "Tétanos",
+    "vacuna": "La vacuna DTaP* protege contra el tétanos.",
+    "trasmision": "Exposición a través de cortaduras en la piel",
+    "sintomas": "Rigidez del cuello y los músculos abdominales, dificultad para tragar, espasmos musculares, fiebre",
+    "complicaciones": "Fractura de huesos, dificultad para respirar, muerte"
+  }
+]
