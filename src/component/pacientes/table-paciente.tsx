@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, Tag } from "antd";
+import { Row, Col, Button, Tag, Skeleton, Alert } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux";
+import { Paciente_INT } from "../../interface";
 
 interface props {
   limit?: number;
@@ -23,15 +26,18 @@ export function TablePaciente({ limit }: props) {
     },
   };
 
-  const [Paciente, setPaciente] = useState<Array<number>>([]);
+  const [Paciente, setPaciente] = useState<Array<Paciente_INT>>([]);
+  const PacienteReducer = useSelector(
+    (state: RootState) => state.PacienteReducer
+  );
 
   useEffect(() => {
     if (limit) {
-      setPaciente([5, 1, 6, 1, 74, 2, 3, 4, 4].splice(1, limit));
+      setPaciente(PacienteReducer.Pacientes.splice(limit));
     } else {
-      setPaciente([5, 1, 6, 1, 74, 2, 3, 4, 4]);
+      setPaciente(PacienteReducer.Pacientes);
     }
-  }, [limit]);
+  }, [limit, PacienteReducer]);
 
   return (
     <>
@@ -43,23 +49,34 @@ export function TablePaciente({ limit }: props) {
         <Col span={2}>Altura</Col>
         <Col span={2}>Optiones</Col>
       </Row>
+      {PacienteReducer.loading && <Skeleton />}
       {Paciente.map((item, index) => (
         <Row justify="space-between" style={Styles.body_table} key={index}>
           <Col span={3}>
-            <Tag color="cyan">{item}</Tag>
+            <Tag color="cyan">{item.codigo}</Tag>
           </Col>
-          <Col span={3}>{item}</Col>
-          <Col span={3}>{item}</Col>
-          <Col span={2}>{item}</Col>
-          <Col span={2}>{item}</Col>
-          <Col span={2}>{item}</Col>
+          <Col span={3}>{item.nombres}</Col>
+          <Col span={3}>{item.apellidos}</Col>
+          <Col span={2}>{item.peso}</Col>
+          <Col span={2}>{item.altura}</Col>
+          <Col span={2}>
+            <Button danger>Eliminar</Button>
+          </Col>
         </Row>
       ))}
 
       <br />
 
       <Row justify="center">
-        <Col>{limit && <Button type="dashed">Todo los pacientes</Button>}</Col>
+        <Col span={20}>
+          {Paciente.length === 0 && (
+            <Alert type="info" message="No hay datos que mostrar" />
+          )}
+
+          {limit && Paciente.length > 5 && (
+            <Button type="dashed">Todo los Pacientes</Button>
+          )}
+        </Col>
       </Row>
     </>
   );

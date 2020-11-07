@@ -1,11 +1,16 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import UsuarioReducer from "./modulos/usuario";
-import SessionReducer from "./modulos/session";
+import Representantes, { getRepresentante } from "./modulos/representante";
+import SessionReducer, { getSesion } from "./modulos/session";
+import PacienteReducer from "./modulos/pacientes";
+import Cookies from "js-cookie";
 
 const rootReducer = combineReducers({
   UsuarioReducer,
+  Representantes,
   SessionReducer,
+  PacienteReducer,
 });
 
 declare global {
@@ -23,7 +28,9 @@ export default function generateStore() {
     composeEnhancers(applyMiddleware(thunk))
   );
 
-  //getProductos()(store.dispatch);
+  getRepresentante()(store.dispatch);
+  Cookies.get("id-user") && getSesion(Cookies.get("id-user"))(store.dispatch);
+
   return store;
 }
 

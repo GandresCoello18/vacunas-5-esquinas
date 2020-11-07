@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { doGoogleLoginAction } from "../redux/modulos/session";
 import { Dispatch } from "../redux";
 import { loginWithGoogle } from "../firebase/firebase";
+import { loginUser } from "../api/usuarios";
 import Cookies from "js-cookie";
 
 export function LoginPage() {
@@ -61,9 +62,15 @@ export function LoginPage() {
 
     try {
       loginWithGoogle()
-        .then((user) => {
+        .then(async (user) => {
           dispatch(doGoogleLoginAction(user));
           Cookies.set("id-user", user.uid);
+          const resLogin = await loginUser(user);
+
+          resLogin.data.feeback
+            ? message.info(resLogin.data.feeback)
+            : message.info("Ingreso exitoso");
+
           history.push("/");
         })
         .catch((err) => {

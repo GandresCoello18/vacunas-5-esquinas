@@ -8,14 +8,14 @@ import Cookies from "js-cookie";
 import { useHistory } from "react-router-dom";
 import { RootState } from "../../redux";
 import { useSelector } from "react-redux";
-import { MyUser } from "../../interface";
+import { Usuario_INT } from "../../interface";
 
 export function NavBar() {
   const [current, setCurrent] = useState<string>("");
   const dispatch: Dispatch = useDispatch();
   const history = useHistory<typeof useHistory>();
 
-  const MiUser: MyUser = useSelector(
+  const MiUser: Usuario_INT = useSelector(
     (state: RootState) => state.SessionReducer.MyUser
   );
 
@@ -42,7 +42,7 @@ export function NavBar() {
             }
           />
           &nbsp; &nbsp;
-          {MiUser.displayName ? MiUser.displayName : "No identificado"}
+          {MiUser.userName ? MiUser.userName : "No identificado"}
         </Menu.Item>
         <Menu.Item
           onClick={() => {

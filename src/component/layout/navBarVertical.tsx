@@ -30,7 +30,9 @@ export function NavBarVertical() {
           <Link to="/">Inicio</Link>
         </Menu.Item>
         <SubMenu key="sub1" icon={<UserAddOutlined />} title="Pacientes">
-          <Menu.Item key="1">Reportes</Menu.Item>
+          <Menu.Item key="1">
+            <Link to="/pacientes/reportes">Reportes</Link>
+          </Menu.Item>
           <Menu.Item key="2">
             <Link to="/pacientes/ingreso">Ingresar nuevo</Link>
           </Menu.Item>

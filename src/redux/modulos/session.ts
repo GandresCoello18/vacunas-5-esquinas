@@ -1,8 +1,9 @@
 import { Dispatch } from "redux";
-import { MyUser } from "../../interface";
+import { Usuario_INT } from "../../interface";
+import { GetSession } from "../../api/usuarios";
 
 export interface initialData {
-  MyUser: MyUser;
+  MyUser: Usuario_INT;
   loading: boolean;
   fetching: boolean;
 }
@@ -12,10 +13,13 @@ const initialData: initialData = {
   loading: false,
   fetching: false,
   MyUser: {
-    uid: "",
-    displayName: "",
+    id_usuario: "",
+    userName: "",
     email: "",
+    status: "",
     photoURL: "",
+    isadmin: false,
+    fecha_registro: "",
   },
 };
 
@@ -48,13 +52,24 @@ export default function reducer(state = initialData, action: any) {
 
 // actiones
 
+export const getSesion = (id_usuario: string | any) => (dispatch: Dispatch) => {
+  GetSession(id_usuario).then((res) => {
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data.session,
+    });
+  });
+};
+
 export const loGOutSession = () => (dispatch: Dispatch) => {
   dispatch({
     type: LOG_OUT,
   });
 };
 
-export const doGoogleLoginAction = (user: MyUser) => (dispatch: Dispatch) => {
+export const doGoogleLoginAction = (user: Usuario_INT | any) => (
+  dispatch: Dispatch
+) => {
   dispatch({
     type: LOGIN,
   });
@@ -62,8 +77,8 @@ export const doGoogleLoginAction = (user: MyUser) => (dispatch: Dispatch) => {
   dispatch({
     type: LOGIN_SUCCESS,
     payload: {
-      uid: user.uid,
-      displayName: user.displayName,
+      id_usuario: user.uid,
+      userName: user.displayName,
       email: user.email,
       photoURL: user.photoURL,
     },

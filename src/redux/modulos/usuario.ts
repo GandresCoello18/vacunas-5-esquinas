@@ -1,9 +1,10 @@
 import { Dispatch } from "redux";
+import { Usuario_INT } from "../../interface";
 
 /// CONSTANTES
 
 export interface initialData {
-  Usuarios: Array<any>;
+  Usuarios: Array<Usuario_INT>;
   loading: boolean;
   error: string;
 }

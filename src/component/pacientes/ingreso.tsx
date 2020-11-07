@@ -1,7 +1,24 @@
-import React, { useState } from "react";
-import { Row, Col, Form, Input, Button, Select, Alert } from "antd";
+import React, { useState, useEffect } from "react";
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Select,
+  Alert,
+  DatePicker,
+  Divider,
+  message,
+} from "antd";
 import { TablePaciente } from "./table-paciente";
 import { TableRepresentante } from "./table-representante";
+import { CreateRepresent } from "../../api/representante";
+import { Paciente_INT, Representantes_INT } from "../../interface";
+import { Dispatch, RootState } from "../../redux";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { setRepresentante } from "../../redux/modulos/representante";
 
 export function IngresoPaciente(): JSX.Element {
   const styles = {
@@ -14,13 +31,85 @@ export function IngresoPaciente(): JSX.Element {
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [form] = Form.useForm();
+  const [isLoadingRepresent, setIsLoadingRepresent] = useState<boolean>(false);
+  const [StateRepresent, setStateRepresent] = useState<
+    Array<Representantes_INT>
+  >([]);
+  const [SelectRepre, setSelectRepre] = useState<number>(0);
 
-  const send = (data: any) => {
-    console.log(data);
+  const Representante: Array<Representantes_INT> = useSelector(
+    (state: RootState) => state.Representantes.Representante
+  );
+
+  const [formPaciente] = Form.useForm();
+  const [formRepresentante] = Form.useForm();
+  const dispatch: Dispatch = useDispatch();
+
+  const { Option } = Select;
+
+  useEffect(() => {
+    setStateRepresent(Representante);
+  }, [Representante]);
+
+  const sendPaciente = (data: any) => {
+    const { altura, apellidos, nacimiento, nombres, peso } = data;
     setIsLoading(true);
 
+    const obj: Paciente_INT = {
+      id_paciente: "",
+      nombres,
+      apellidos,
+      altura,
+      peso,
+      nacimiento: moment(nacimiento._d).format(),
+      codigo: "",
+      id_representante: SelectRepre,
+    };
+
+    if (SelectRepre) {
+    } else {
+      message.error("Seleccione algun representante");
+    }
+
     setIsLoading(false);
+  };
+
+  const sendRepresent = async (data: any) => {
+    setIsLoadingRepresent(true);
+    const { Cedula, Sexo, Nombres, Apellidos } = data;
+
+    try {
+      const obj: Representantes_INT = {
+        cedula: Cedula,
+        sexo: Sexo,
+        nombres: Nombres,
+        apellidos: Apellidos,
+      };
+
+      const resRepre = await CreateRepresent(obj);
+
+      if (resRepre.data.feeback) {
+        message.error(resRepre.data.feeback);
+      } else {
+        message.success(
+          `Se registro el representante con la CI: ${obj.cedula}`
+        );
+        dispatch(setRepresentante([...Representante, ...resRepre.data]));
+        formRepresentante.resetFields();
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+
+    setIsLoadingRepresent(false);
+  };
+
+  const searchRepresent = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStateRepresent(
+      Representante.filter(
+        (item) => item.cedula.toString().indexOf(event.target.value) !== -1
+      )
+    );
   };
 
   return (
@@ -28,9 +117,9 @@ export function IngresoPaciente(): JSX.Element {
       <Row justify="space-around">
         <Col style={styles.box} xs={20} md={11}>
           <h3 style={{ textAlign: "center", padding: 10 }}>Paciente</h3>
-          <Form form={form} onFinish={send} name="dynamic_rule">
+          <Form form={formPaciente} onFinish={sendPaciente} name="dynamic_rule">
             <Form.Item
-              name="nombre"
+              name="nombres"
               label="Nombres"
               rules={[
                 {
@@ -42,8 +131,8 @@ export function IngresoPaciente(): JSX.Element {
               <Input placeholder="Ingrese sus nombres." />
             </Form.Item>
             <Form.Item
-              label="Apellidod"
-              name="apellido"
+              label="Apellidos"
+              name="apellidos"
               rules={[
                 {
                   required: true,
@@ -53,6 +142,31 @@ export function IngresoPaciente(): JSX.Element {
             >
               <Input placeholder="Ingrese los apellidos." />
             </Form.Item>
+            <Divider />
+            <h3 style={{ textAlign: "center" }}>Representantes</h3>
+            <Row justify="space-around">
+              <Col span={12}>
+                <Select
+                  defaultValue="Seleccionar...."
+                  style={{ width: "100%" }}
+                  onChange={(value) => setSelectRepre(Number(value))}
+                >
+                  {StateRepresent.map((represent: Representantes_INT) => (
+                    <Option value={represent.cedula}>
+                      {represent.nombres} {represent.apellidos} -{" "}
+                      {represent.cedula}
+                    </Option>
+                  ))}
+                </Select>
+              </Col>
+              <Col span={6}>
+                <Input
+                  placeholder="Cedula del representante"
+                  onChange={searchRepresent}
+                />
+              </Col>
+            </Row>
+            <Divider />
             <Row justify="space-around">
               <Col span={10}>
                 <Form.Item
@@ -79,15 +193,33 @@ export function IngresoPaciente(): JSX.Element {
                     },
                   ]}
                 >
-                  <Input placeholder="Ingrese la altura." />
+                  <Input type="number" placeholder="Ingrese la altura." />
                 </Form.Item>
               </Col>
             </Row>
-            <Form.Item>
-              <Button htmlType="submit" type="primary" loading={isLoading}>
-                Guardar paciente
-              </Button>
-            </Form.Item>
+            <Row justify="space-around">
+              <Col>
+                <Form.Item
+                  name="nacimiento"
+                  label="Nacimiento"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Escriba la altura.",
+                    },
+                  ]}
+                >
+                  <DatePicker placeholder="Nacimiento" />
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item>
+                  <Button htmlType="submit" type="primary" loading={isLoading}>
+                    Guardar paciente
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
           </Form>
           <Alert
             type="info"
@@ -103,9 +235,13 @@ export function IngresoPaciente(): JSX.Element {
       </Row>
       <br />
       <Row justify="space-around">
-        <Col style={styles.box} xs={20} md={10}>
+        <Col style={styles.box} xs={20} md={11}>
           <h3 style={{ textAlign: "center", padding: 10 }}>Representante</h3>
-          <Form form={form} onFinish={send} name="dynamic_rule">
+          <Form
+            form={formRepresentante}
+            onFinish={sendRepresent}
+            name="dynamic_rule"
+          >
             <Row justify="space-around">
               <Col span={10}>
                 <Form.Item
@@ -154,7 +290,7 @@ export function IngresoPaciente(): JSX.Element {
             </Form.Item>
             <Form.Item
               label="Apellidos"
-              name="Apelldios"
+              name="Apellidos"
               rules={[
                 {
                   required: true,
@@ -165,17 +301,21 @@ export function IngresoPaciente(): JSX.Element {
               <Input placeholder="Escriba los apellidos." />
             </Form.Item>
             <Form.Item>
-              <Button htmlType="submit" type="primary" loading={isLoading}>
-                Guardar
+              <Button
+                htmlType="submit"
+                type="primary"
+                loading={isLoadingRepresent}
+              >
+                Guardar representante
               </Button>
             </Form.Item>
           </Form>
         </Col>
-        <Col style={styles.box} xs={20} md={10}>
+        <Col style={styles.box} xs={20} md={12}>
           <h3 style={{ textAlign: "center", padding: 10 }}>
             Representante recientes
           </h3>
-          <TableRepresentante limit={3} />
+          <TableRepresentante limit={0} />
         </Col>
       </Row>
     </>
