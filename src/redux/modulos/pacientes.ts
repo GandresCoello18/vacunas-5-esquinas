@@ -43,7 +43,7 @@ export const getPacientes = () => (dispatch: Dispatch) => {
   });
 };
 
-export const setRepresentante = (paciente: any) => (dispatch: Dispatch) => {
+export const setPacientes = (paciente: any) => (dispatch: Dispatch) => {
   dispatch({
     type: SET_PACIENTES,
     payload: paciente,

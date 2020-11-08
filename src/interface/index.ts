@@ -13,10 +13,11 @@ export interface Paciente_INT {
   nombres: string;
   apellidos: string;
   nacimiento: string;
-  peso: number;
-  altura: number;
+  peso: string;
+  altura: string;
   codigo: string;
-  id_representante?: number;
+  id_representante?: number | any;
+  img?: string;
 }
 
 export interface Representantes_INT {

@@ -19,6 +19,8 @@ import { Dispatch, RootState } from "../../redux";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { setRepresentante } from "../../redux/modulos/representante";
+import { setPacientes } from "../../redux/modulos/pacientes";
+import { CreatePaciente } from "../../api/paciente";
 
 export function IngresoPaciente(): JSX.Element {
   const styles = {
@@ -41,6 +43,10 @@ export function IngresoPaciente(): JSX.Element {
     (state: RootState) => state.Representantes.Representante
   );
 
+  const Pacientes: Array<Paciente_INT> = useSelector(
+    (state: RootState) => state.PacienteReducer.Pacientes
+  );
+
   const [formPaciente] = Form.useForm();
   const [formRepresentante] = Form.useForm();
   const dispatch: Dispatch = useDispatch();
@@ -51,7 +57,7 @@ export function IngresoPaciente(): JSX.Element {
     setStateRepresent(Representante);
   }, [Representante]);
 
-  const sendPaciente = (data: any) => {
+  const sendPaciente = async (data: any) => {
     const { altura, apellidos, nacimiento, nombres, peso } = data;
     setIsLoading(true);
 
@@ -66,7 +72,28 @@ export function IngresoPaciente(): JSX.Element {
       id_representante: SelectRepre,
     };
 
+    const img: any = document.getElementById("foto");
+
+    const form: FormData = new FormData();
+    form.append("id_paciente", obj.id_paciente);
+    form.append("nombres", obj.nombres);
+    form.append("apellidos", obj.apellidos);
+    form.append("altura", obj.altura);
+    form.append("peso", obj.peso);
+    form.append("nacimiento", obj.nacimiento);
+    form.append("codigo", obj.codigo);
+    form.append("id_representante", obj.id_representante);
+    form.append("img", img.files[0]);
+
     if (SelectRepre) {
+      const resPaciente = await CreatePaciente(form);
+
+      if (resPaciente.data.feeback) {
+        message.error(resPaciente.data.feeback);
+      } else {
+        dispatch(setPacientes([...Pacientes, ...resPaciente.data]));
+        formPaciente.resetFields();
+      }
     } else {
       message.error("Seleccione algun representante");
     }
@@ -213,13 +240,28 @@ export function IngresoPaciente(): JSX.Element {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item>
-                  <Button htmlType="submit" type="primary" loading={isLoading}>
-                    Guardar paciente
-                  </Button>
+                <Form.Item
+                  name="foto"
+                  label="Fotografia"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Suba una fotografia.",
+                    },
+                  ]}
+                >
+                  <input type="file" id="foto" />
                 </Form.Item>
               </Col>
             </Row>
+            <Row>
+              <Col>
+                <Button htmlType="submit" type="primary" loading={isLoading}>
+                  Guardar paciente
+                </Button>
+              </Col>
+            </Row>
+            <br />
           </Form>
           <Alert
             type="info"
@@ -230,7 +272,7 @@ export function IngresoPaciente(): JSX.Element {
           <h3 style={{ textAlign: "center", padding: 10 }}>
             Pacientes reciente
           </h3>
-          <TablePaciente limit={4} />
+          <TablePaciente limit={1} />
         </Col>
       </Row>
       <br />

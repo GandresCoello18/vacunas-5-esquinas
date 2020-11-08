@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import UsuarioReducer from "./modulos/usuario";
 import Representantes, { getRepresentante } from "./modulos/representante";
 import SessionReducer, { getSesion } from "./modulos/session";
-import PacienteReducer from "./modulos/pacientes";
+import PacienteReducer, { getPacientes } from "./modulos/pacientes";
 import Cookies from "js-cookie";
 
 const rootReducer = combineReducers({
@@ -29,6 +29,7 @@ export default function generateStore() {
   );
 
   getRepresentante()(store.dispatch);
+  getPacientes()(store.dispatch);
   Cookies.get("id-user") && getSesion(Cookies.get("id-user"))(store.dispatch);
 
   return store;

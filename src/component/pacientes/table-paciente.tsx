@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, Tag, Skeleton, Alert } from "antd";
+import { Row, Col, Button, Tag, Skeleton, Alert, Avatar } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import { Paciente_INT } from "../../interface";
+import { DeleteOutlined } from "@ant-design/icons";
+import { DOMAIN } from "../../config/domain";
 
 interface props {
   limit?: number;
@@ -47,7 +49,7 @@ export function TablePaciente({ limit }: props) {
         <Col span={3}>Apellido</Col>
         <Col span={2}>Peso</Col>
         <Col span={2}>Altura</Col>
-        <Col span={2}>Optiones</Col>
+        <Col span={2}>{limit ? "Foto" : "Optiones"}</Col>
       </Row>
       {PacienteReducer.loading && <Skeleton />}
       {Paciente.map((item, index) => (
@@ -60,7 +62,13 @@ export function TablePaciente({ limit }: props) {
           <Col span={2}>{item.peso}</Col>
           <Col span={2}>{item.altura}</Col>
           <Col span={2}>
-            <Button danger>Eliminar</Button>
+            {limit ? (
+              <Avatar src={`${DOMAIN}/static/pacientes/${item.img}`} />
+            ) : (
+              <Button danger>
+                <DeleteOutlined />
+              </Button>
+            )}
           </Col>
         </Row>
       ))}

@@ -1,14 +1,15 @@
 import axios from "axios";
 import { DOMAIN } from "../config/domain";
-import { Paciente_INT } from "../interface";
 
 /// PETICION POST
 
-export const CreatePaciente = async (paciente: Paciente_INT) => {
+export const CreatePaciente = async (paciente: FormData) => {
+  console.log(paciente);
   return await axios({
     method: "POST",
     url: `${DOMAIN}/api/paciente`,
     data: paciente,
+    headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
