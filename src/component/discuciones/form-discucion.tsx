@@ -1,13 +1,54 @@
 import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, Dispatch } from "../../redux";
+import { Form, Input, Button, Mentions, message } from "antd";
+import {
+  Discucion_INT,
+  Discucion_Menciones_INT,
+  Paciente_INT,
+} from "../../interface";
+import { createDiscucion } from "../../api/discucion";
+import { setDiscuciones } from "../../redux/modulos/discucion";
+import { AUTH_USER } from "../../config/domain";
+import { ArrayMencion } from "../../hooks/mencion-array";
 
 export function FromDiscucion() {
+  const dispatch: Dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
   const { TextArea } = Input;
+  const { Option } = Mentions;
 
-  const send = (data: any) => {
+  const Pacientes: Array<Paciente_INT> = useSelector(
+    (state: RootState) => state.PacienteReducer.Pacientes
+  );
+  const Discuciones: Array<Discucion_Menciones_INT> = useSelector(
+    (state: RootState) => state.DiscucionesReducer.Discuciones
+  );
+
+  const send = async (data: any) => {
+    const { Asunto, menciones, mensaje } = data;
+
     setIsLoading(true);
+
+    const discucion: Discucion_INT = {
+      id_discucion: "",
+      asunto: Asunto,
+      contenido: mensaje,
+      pacientes: ArrayMencion(menciones),
+      id_usuario: AUTH_USER,
+    };
+
+    try {
+      const resDiscucion = await createDiscucion(discucion);
+      message.success(
+        "Su menjase se envio correctamente, ver en la seccion de discuciones."
+      );
+      form.resetFields();
+      dispatch(setDiscuciones([...Discuciones, ...resDiscucion.data]));
+    } catch (error) {
+      message.error(error.message);
+    }
 
     setIsLoading(false);
   };
@@ -25,6 +66,27 @@ export function FromDiscucion() {
           ]}
         >
           <Input type="text" placeholder="Asunto de su comentario" />
+        </Form.Item>
+        <Form.Item
+          name="menciones"
+          rules={[
+            {
+              required: true,
+              message: "Falta mencionar a algun paciente.",
+            },
+          ]}
+        >
+          <Mentions
+            style={{ width: "100%" }}
+            placeholder="Menciona algun paciente"
+            defaultValue={Pacientes.length > 0 ? Pacientes[0].codigo : ""}
+          >
+            {Pacientes.map((paciente) => (
+              <Option value={paciente.codigo}>
+                {paciente.nombres} {paciente.apellidos}
+              </Option>
+            ))}
+          </Mentions>
         </Form.Item>
         <Form.Item
           name="mensaje"

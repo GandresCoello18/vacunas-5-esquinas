@@ -4,6 +4,7 @@ import UsuarioReducer from "./modulos/usuario";
 import Representantes, { getRepresentante } from "./modulos/representante";
 import SessionReducer, { getSesion } from "./modulos/session";
 import PacienteReducer, { getPacientes } from "./modulos/pacientes";
+import DiscucionesReducer, { getDiscuciones } from "./modulos/discucion";
 import Cookies from "js-cookie";
 
 const rootReducer = combineReducers({
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   Representantes,
   SessionReducer,
   PacienteReducer,
+  DiscucionesReducer,
 });
 
 declare global {
@@ -30,6 +32,7 @@ export default function generateStore() {
 
   getRepresentante()(store.dispatch);
   getPacientes()(store.dispatch);
+  getDiscuciones()(store.dispatch);
   Cookies.get("id-user") && getSesion(Cookies.get("id-user"))(store.dispatch);
 
   return store;

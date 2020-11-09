@@ -3,14 +3,15 @@ import { Row, Col, Button, Tag, Skeleton, Alert, Avatar } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import { Paciente_INT } from "../../interface";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, AuditOutlined } from "@ant-design/icons";
 import { DOMAIN } from "../../config/domain";
 
 interface props {
   limit?: number;
+  setIdPaciente?: Function | any;
 }
 
-export function TablePaciente({ limit }: props) {
+export function TablePaciente({ limit, setIdPaciente }: props) {
   const Styles = {
     head_table: {
       backgroundColor: "#001529",
@@ -49,7 +50,7 @@ export function TablePaciente({ limit }: props) {
         <Col span={3}>Apellido</Col>
         <Col span={2}>Peso</Col>
         <Col span={2}>Altura</Col>
-        <Col span={2}>{limit ? "Foto" : "Optiones"}</Col>
+        <Col span={3}>{limit ? "Foto" : "Optiones"}</Col>
       </Row>
       {PacienteReducer.loading && <Skeleton />}
       {Paciente.map((item, index) => (
@@ -61,13 +62,22 @@ export function TablePaciente({ limit }: props) {
           <Col span={3}>{item.apellidos}</Col>
           <Col span={2}>{item.peso}</Col>
           <Col span={2}>{item.altura}</Col>
-          <Col span={2}>
+          <Col span={3}>
             {limit ? (
               <Avatar src={`${DOMAIN}/static/pacientes/${item.img}`} />
             ) : (
-              <Button danger>
-                <DeleteOutlined />
-              </Button>
+              <>
+                <Button danger>
+                  <DeleteOutlined />
+                </Button>
+                &nbsp; &nbsp;
+                <Button
+                  type="primary"
+                  onClick={() => setIdPaciente(item.id_paciente)}
+                >
+                  <AuditOutlined />
+                </Button>
+              </>
             )}
           </Col>
         </Row>
