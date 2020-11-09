@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import { Usuario_INT } from "../../interface";
+import { GetUsuarios } from "../../api/usuarios";
 
 /// CONSTANTES
 
@@ -33,13 +34,15 @@ export default function reducer(state = initialData, action: any) {
 
 /// ACTIONS
 
-export const getUsuarios = () => (dispatch: Dispatch) => {
-  /*obtenerUsuarios().then(res => {
-        dispatch({
-            type: GET_USUARIOS,
-            payload: res.data,
-        });
-    });*/
+export const getUsuarios = (id_usuario: string | any) => (
+  dispatch: Dispatch
+) => {
+  GetUsuarios(id_usuario).then((res) => {
+    dispatch({
+      type: GET_USUARIOS,
+      payload: res.data,
+    });
+  });
 };
 
 export const getMyUser = (usuarios: any) => (dispatch: Dispatch) => {

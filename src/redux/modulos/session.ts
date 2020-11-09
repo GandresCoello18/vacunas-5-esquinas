@@ -18,7 +18,7 @@ const initialData: initialData = {
     email: "",
     status: "",
     photoURL: "",
-    isadmin: false,
+    isAdmin: false,
     fecha_registro: "",
   },
 };

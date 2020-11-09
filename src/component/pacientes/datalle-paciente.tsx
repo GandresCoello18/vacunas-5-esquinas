@@ -1,59 +1,63 @@
-import React from "react";
-import { Row, Col, Empty, Progress, Button, Divider, Tag } from "antd";
-import { UserSwitchOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Empty } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux";
+import { Paciente_INT, Representantes_INT } from "../../interface";
+import { CardDetallePaciente } from "./card-detalles-paciente";
 
 interface Props {
   id_paciente?: string;
 }
 
 export function DetallePaciente({ id_paciente }: Props) {
+  const [thisPaciente, setThisPaciente] = useState<Paciente_INT | undefined>({
+    id_paciente: "",
+    nombres: "",
+    apellidos: "",
+    nacimiento: "",
+    id_representante: 0,
+    codigo: "",
+    peso: "",
+    altura: "",
+    img: "",
+  });
+
+  const [thisRepresentante, setThisRepresentante] = useState<
+    Representantes_INT | undefined
+  >({
+    cedula: 0,
+    nombres: "",
+    apellidos: "",
+    sexo: "",
+  });
+
+  const Pacientes: Array<Paciente_INT> = useSelector(
+    (state: RootState) => state.PacienteReducer.Pacientes
+  );
+  const Representantes: Array<Representantes_INT> = useSelector(
+    (state: RootState) => state.Representantes.Representante
+  );
+
+  useEffect(() => {
+    const findPaciente = Pacientes.find(
+      (paciente) => paciente.id_paciente === id_paciente
+    );
+    setThisPaciente(findPaciente);
+
+    const findRepresentante = Representantes.find(
+      (repre) => repre.cedula === findPaciente?.id_representante
+    );
+    setThisRepresentante(findRepresentante);
+  }, [Pacientes, Representantes, id_paciente]);
+
   return (
     <>
-      {id_paciente ? (
+      {thisPaciente ? (
         <>
-          <Row justify="center">
-            <Col span={11}>
-              <img
-                style={{ borderRadius: "50%" }}
-                alt="avatar paciente"
-                width={200}
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-              />
-            </Col>
-            <Col span={20}>
-              <h2 style={{ textAlign: "center" }}>Andres coello</h2>
-              <br />
-              <h4>Progreso</h4>
-              <Progress percent={50} status="active" />
-            </Col>
-          </Row>
-          <br />
-          <Row justify="space-around">
-            <Col span={7}>
-              <Button>Mis vacunas</Button>
-            </Col>
-            <Col span={7}>
-              <Button>Menciones</Button>
-            </Col>
-            <Col span={7}>
-              <Button>Estadisticas</Button>
-            </Col>
-          </Row>
-          <Divider />
-          <h3>
-            Su representante:{" "}
-            <Tag color="green">
-              <UserSwitchOutlined /> Martha Goyes
-            </Tag>
-          </h3>
-
-          <Button
-            style={{ position: "absolute", bottom: 10, left: 0 }}
-            danger
-            block
-          >
-            Eliminar
-          </Button>
+          <CardDetallePaciente
+            thisPaciente={thisPaciente}
+            thisRepresentante={thisRepresentante}
+          />
         </>
       ) : (
         <Empty description="Selecciona algun paciente." />

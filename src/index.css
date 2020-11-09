@@ -9,9 +9,18 @@ body {
   background-color: rgb(230, 230, 230) !important;
 }
 
-code {
+.code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.scroll-card-detalles {
+  overflow-y: scroll;
+  height: 600px;
+  background-color: #fff;
+  padding: 10;
+  margin-top: 15;
+  border-radius: 10;
 }
 
 .scroll::-webkit-scrollbar-thumb {

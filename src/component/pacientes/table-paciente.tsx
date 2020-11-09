@@ -60,8 +60,13 @@ export function TablePaciente({ limit, setIdPaciente }: props) {
           </Col>
           <Col span={3}>{item.nombres}</Col>
           <Col span={3}>{item.apellidos}</Col>
-          <Col span={2}>{item.peso}</Col>
-          <Col span={2}>{item.altura}</Col>
+          <Col span={2}>
+            <b>KLG: </b>
+            {item.peso}
+          </Col>
+          <Col span={2}>
+            <b>CM: </b> {item.altura}
+          </Col>
           <Col span={3}>
             {limit ? (
               <Avatar src={`${DOMAIN}/static/pacientes/${item.img}`} />

@@ -2,7 +2,7 @@ export interface Usuario_INT {
   readonly id_usuario: string;
   email: string;
   status: string;
-  isadmin?: boolean;
+  isAdmin?: boolean | number;
   userName: string;
   photoURL: string;
   fecha_registro: string;
@@ -50,4 +50,10 @@ export interface Discucion_Menciones_INT {
   apellidos: string;
   img: string;
   id_paciente: string;
+}
+
+export interface Vacunas_INT {
+  readonly id_vacuna: number;
+  vacuna_name: string;
+  cantidad: number;
 }

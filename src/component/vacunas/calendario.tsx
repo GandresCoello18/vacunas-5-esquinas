@@ -50,7 +50,11 @@ export function CalendarioVacuna() {
           </h3>
           <Divider />
 
-          <Row justify="space-between" style={Styles.head_table}>
+          <Row
+            justify="space-between"
+            style={Styles.head_table}
+            id="enfermedades"
+          >
             <Col span={2}>Enfermedad</Col>
             <Col span={3}>Vacuna</Col>
             <Col span={3}>Trasmision</Col>

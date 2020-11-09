@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Discucion_Menciones_INT } from "../../interface";
 import { DOMAIN } from "../../config/domain";
 import { DeleteOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 interface Props {
   limit?: number;
@@ -55,6 +56,7 @@ export function CommentDiscucion({ limit }: Props) {
                           <u>{discucion.codigo}</u>
                         </Link>
                       </p>
+                      <p>{moment(discucion.fecha_discucion).format("LL")}</p>
                     </Col>
                     <Col span={3}>
                       <Button danger>

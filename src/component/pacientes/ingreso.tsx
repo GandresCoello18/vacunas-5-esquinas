@@ -12,7 +12,7 @@ import {
   message,
 } from "antd";
 import { TablePaciente } from "./table-paciente";
-import { TableRepresentante } from "./table-representante";
+import { TableRepresentante } from "../representante/table-representante";
 import { CreateRepresent } from "../../api/representante";
 import { Paciente_INT, Representantes_INT } from "../../interface";
 import { Dispatch, RootState } from "../../redux";

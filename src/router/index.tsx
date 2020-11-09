@@ -7,6 +7,8 @@ import { LoginPage } from "../pages/login";
 import { PrivateRoute } from "./private";
 import { PacientesPage } from "../pages/pacientes";
 import { PubliceRoute } from "./public";
+import { AdminPage } from "../pages/admin";
+import { RepresentantePage } from "../pages/representante";
 
 export default function Routes() {
   return (
@@ -16,6 +18,11 @@ export default function Routes() {
           <PubliceRoute path="/login" component={LoginPage} />
           <PrivateRoute path="/vacunas/:render" component={VacunasPage} />
           <PrivateRoute path="/pacientes/:render" component={PacientesPage} />
+          <PrivateRoute
+            path="/representantes/:render"
+            component={RepresentantePage}
+          />
+          <PrivateRoute path="/admin/:render" component={AdminPage} />
           <PrivateRoute path="/" component={HomePage} />
           <Route exact path="/404" component={NotFound} />
           <Route component={NotFound} />

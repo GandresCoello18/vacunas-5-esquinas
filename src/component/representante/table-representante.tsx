@@ -3,13 +3,14 @@ import { Row, Col, Button, Alert, Tag, Skeleton } from "antd";
 import { useSelector } from "react-redux";
 import { Representantes_INT } from "../../interface";
 import { RootState } from "../../redux";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
 
 interface props {
   limit?: number;
+  setSelectRepresentante?: Function | any;
 }
 
-export function TableRepresentante({ limit }: props) {
+export function TableRepresentante({ limit, setSelectRepresentante }: props) {
   const Styles = {
     head_table: {
       backgroundColor: "#001529",
@@ -45,11 +46,11 @@ export function TableRepresentante({ limit }: props) {
   return (
     <>
       <Row justify="space-between" style={Styles.head_table}>
-        <Col span={3}>Cedula</Col>
+        <Col span={3}># Cedula</Col>
         <Col span={3}>Sexo</Col>
         <Col span={3}>Nombres</Col>
-        <Col span={3}>Apellido</Col>
-        <Col span={2}>Optiones</Col>
+        <Col span={3}>Apellidos</Col>
+        <Col span={3}>Optiones</Col>
       </Row>
       {RepresentanteReducer.loading && <Skeleton />}
       {Representante.map((item: Representantes_INT, index: number) => (
@@ -62,10 +63,21 @@ export function TableRepresentante({ limit }: props) {
           <Col span={3}>{item.sexo}</Col>
           <Col span={3}>{item.nombres}</Col>
           <Col span={3}>{item.apellidos}</Col>
-          <Col span={2}>
+          <Col span={3}>
             <Button danger>
               <DeleteOutlined />
             </Button>
+            {!limit && (
+              <>
+                &nbsp; &nbsp;
+                <Button
+                  type="ghost"
+                  onClick={() => setSelectRepresentante(item.cedula)}
+                >
+                  <UserAddOutlined />
+                </Button>
+              </>
+            )}
           </Col>
         </Row>
       ))}

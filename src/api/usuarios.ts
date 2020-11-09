@@ -13,10 +13,10 @@ export const loginUser = async (user: any) => {
 
 ////// PETICION GET
 
-export const GetUsuarios = async () => {
+export const GetUsuarios = async (id_usuarios: string) => {
   return await axios({
     method: "GET",
-    url: `${DOMAIN}/api/usuario`,
+    url: `${DOMAIN}/api/usuario/${id_usuarios}`,
   });
 };
 

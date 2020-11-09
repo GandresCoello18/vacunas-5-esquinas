@@ -1,10 +1,11 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import UsuarioReducer from "./modulos/usuario";
+import UsuarioReducer, { getUsuarios } from "./modulos/usuario";
 import Representantes, { getRepresentante } from "./modulos/representante";
 import SessionReducer, { getSesion } from "./modulos/session";
 import PacienteReducer, { getPacientes } from "./modulos/pacientes";
 import DiscucionesReducer, { getDiscuciones } from "./modulos/discucion";
+import VacunasReducer, { getVacunas } from "./modulos/vacuna";
 import Cookies from "js-cookie";
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   SessionReducer,
   PacienteReducer,
   DiscucionesReducer,
+  VacunasReducer,
 });
 
 declare global {
@@ -33,6 +35,9 @@ export default function generateStore() {
   getRepresentante()(store.dispatch);
   getPacientes()(store.dispatch);
   getDiscuciones()(store.dispatch);
+  getVacunas()(store.dispatch);
+
+  Cookies.get("id-user") && getUsuarios(Cookies.get("id-user"))(store.dispatch);
   Cookies.get("id-user") && getSesion(Cookies.get("id-user"))(store.dispatch);
 
   return store;
