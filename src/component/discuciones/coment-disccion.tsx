@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, List, Row } from "antd";
+import { Alert, Avatar, Button, Col, Divider, List, Row } from "antd";
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { RootState } from "../../redux";
@@ -7,12 +7,15 @@ import { Discucion_Menciones_INT } from "../../interface";
 import { DOMAIN } from "../../config/domain";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { VerComentariosMencion } from "./ver-comentarios";
+import { CommentForm } from "./coment-form";
 
 interface Props {
   limit?: number;
+  setSelectPaciente?: Function | any;
 }
 
-export function CommentDiscucion({ limit }: Props) {
+export function CommentDiscucion({ limit, setSelectPaciente }: Props) {
   const [discuciones, setDiscuciones] = useState<
     Array<Discucion_Menciones_INT>
   >([]);
@@ -47,7 +50,12 @@ export function CommentDiscucion({ limit }: Props) {
                     <Col span={19}>
                       <p>{discucion.contenido}</p>
                       <p>
-                        <Link to={`/${discucion.id_paciente}`}>
+                        <Link
+                          to="#"
+                          onClick={() =>
+                            setSelectPaciente(discucion.id_paciente)
+                          }
+                        >
                           <Avatar
                             src={`${DOMAIN}/static/pacientes/${discucion.img}`}
                           />
@@ -64,12 +72,27 @@ export function CommentDiscucion({ limit }: Props) {
                       </Button>
                     </Col>
                   </Row>
+                  <Divider />
+
+                  <VerComentariosMencion
+                    id_discucion_mencion={discucion.id_discucion_mencion}
+                  />
+                  <CommentForm
+                    id_discucion_mencion={discucion.id_discucion_mencion}
+                  />
                 </>
               }
             />
           </List.Item>
         ))}
       </List>
+
+      {discuciones.length === 0 && (
+        <Alert
+          type="info"
+          message="No hay datos de discuciones para mostrar...."
+        />
+      )}
     </>
   );
 }

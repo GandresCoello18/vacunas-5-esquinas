@@ -34,8 +34,8 @@ export default function reducer(state = initialData, action: any) {
 
 /// ACTIONS
 
-export const getDiscuciones = () => (dispatch: Dispatch) => {
-  getDiscucion().then((res) => {
+export const getDiscuciones = (fecha: string) => (dispatch: Dispatch) => {
+  getDiscucion(fecha).then((res) => {
     dispatch({
       type: GET_DISCUCION,
       payload: res.data,

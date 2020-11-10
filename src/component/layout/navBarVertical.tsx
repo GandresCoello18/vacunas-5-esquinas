@@ -6,6 +6,7 @@ import {
   LayoutOutlined,
   SettingOutlined,
   UsergroupAddOutlined,
+  WechatOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -14,7 +15,7 @@ import { Usuario_INT } from "../../interface";
 
 const { SubMenu } = Menu;
 
-export function NavBarVertical() {
+export function NavBarVertical(): JSX.Element {
   const [theme] = useState<string | any>("dark");
   const [current, setCurrent] = useState<string>("darshboard");
 
@@ -57,8 +58,13 @@ export function NavBarVertical() {
             <Link to="/vacunas/calendario">Calendario</Link>
           </Menu.Item>
         </SubMenu>
+        <SubMenu key="sub4" icon={<WechatOutlined />} title="Discuciones">
+          <Menu.Item key="1">
+            <Link to="/discuciones/reportes">Reportes</Link>
+          </Menu.Item>
+        </SubMenu>
         {MyUser.isAdmin && (
-          <SubMenu key="sub4" icon={<SettingOutlined />} title="Administracion">
+          <SubMenu key="sub5" icon={<SettingOutlined />} title="Administracion">
             <Menu.Item key="1">
               <Link to="/admin/usuario">Usuarios</Link>
             </Menu.Item>

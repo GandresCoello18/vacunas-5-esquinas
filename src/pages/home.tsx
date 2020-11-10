@@ -6,6 +6,8 @@ import { ListDiscucionCantidad } from "../component/discuciones/list-discucion-c
 import { LineGraficoPeso } from "../component/graficos/line-peso";
 import { LineGraficoAltura } from "../component/graficos/line-altura";
 import { Layout } from "../component/layout";
+import { fecha_actual } from "../hooks/fecha";
+import moment from "moment";
 
 export function HomePage() {
   const styles = {
@@ -41,7 +43,9 @@ export function HomePage() {
             <FromDiscucion />
           </Col>
           <Col style={styles.box} xs={24} md={8}>
-            <h3>Discucciones</h3>
+            <h3>
+              Discucciones: <u>{moment(fecha_actual()).format("LL")}</u>
+            </h3>
             <Divider />
             <CommentDiscucion />
           </Col>

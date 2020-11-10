@@ -6,7 +6,11 @@ import SessionReducer, { getSesion } from "./modulos/session";
 import PacienteReducer, { getPacientes } from "./modulos/pacientes";
 import DiscucionesReducer, { getDiscuciones } from "./modulos/discucion";
 import VacunasReducer, { getVacunas } from "./modulos/vacuna";
+import ComentariosReducer, {
+  getComentarioDiscuciones,
+} from "./modulos/comentario-discucion";
 import Cookies from "js-cookie";
+import { fecha_actual } from "../hooks/fecha";
 
 const rootReducer = combineReducers({
   UsuarioReducer,
@@ -15,6 +19,7 @@ const rootReducer = combineReducers({
   PacienteReducer,
   DiscucionesReducer,
   VacunasReducer,
+  ComentariosReducer,
 });
 
 declare global {
@@ -32,13 +37,14 @@ export default function generateStore() {
     composeEnhancers(applyMiddleware(thunk))
   );
 
-  getRepresentante()(store.dispatch);
-  getPacientes()(store.dispatch);
-  getDiscuciones()(store.dispatch);
-  getVacunas()(store.dispatch);
-
   Cookies.get("id-user") && getUsuarios(Cookies.get("id-user"))(store.dispatch);
   Cookies.get("id-user") && getSesion(Cookies.get("id-user"))(store.dispatch);
+
+  getRepresentante()(store.dispatch);
+  getPacientes()(store.dispatch);
+  getDiscuciones(fecha_actual())(store.dispatch);
+  getVacunas()(store.dispatch);
+  getComentarioDiscuciones()(store.dispatch);
 
   return store;
 }

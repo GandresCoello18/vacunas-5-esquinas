@@ -8,6 +8,7 @@ import { PrivateRoute } from "./private";
 import { PacientesPage } from "../pages/pacientes";
 import { PubliceRoute } from "./public";
 import { AdminPage } from "../pages/admin";
+import { DiscucionesPage } from "../pages/discuciones";
 import { RepresentantePage } from "../pages/representante";
 
 export default function Routes() {
@@ -23,6 +24,10 @@ export default function Routes() {
             component={RepresentantePage}
           />
           <PrivateRoute path="/admin/:render" component={AdminPage} />
+          <PrivateRoute
+            path="/discuciones/:render"
+            component={DiscucionesPage}
+          />
           <PrivateRoute path="/" component={HomePage} />
           <Route exact path="/404" component={NotFound} />
           <Route component={NotFound} />

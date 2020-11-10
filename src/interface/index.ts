@@ -38,6 +38,7 @@ export interface Discucion_INT {
 
 export interface Discucion_Menciones_INT {
   id_discucion: string;
+  id_discucion_mencion: string;
   asunto: string;
   contenido: string;
   fecha_discucion: string;
@@ -56,4 +57,15 @@ export interface Vacunas_INT {
   readonly id_vacuna: number;
   vacuna_name: string;
   cantidad: number;
+}
+
+export interface Comentario_Discucion_INT {
+  id_comentario_mencion: string;
+  id_usuario: string;
+  id_discucion_mencion: string;
+  fecha_comentario: string;
+  comentario: string;
+  userName: string;
+  photoURL: string;
+  isAdmin: boolean | number;
 }
