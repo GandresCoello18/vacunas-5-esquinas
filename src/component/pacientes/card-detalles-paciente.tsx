@@ -2,7 +2,6 @@ import React from "react";
 import { Row, Col, Progress, Button, Divider, Tag } from "antd";
 import { DOMAIN } from "../../config/domain";
 import {
-  CalendarOutlined,
   CommentOutlined,
   EditOutlined,
   LineChartOutlined,
@@ -10,6 +9,8 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Paciente_INT, Representantes_INT } from "../../interface";
+import { ModalBasic } from "../layout/modal";
+import { FormAddVacuna } from "../vacunas/form-add-vacuna";
 
 interface Props {
   thisPaciente: Paciente_INT;
@@ -56,21 +57,29 @@ export function CardDetallePaciente({
       <br />
       <Row justify="space-around">
         <Col span={9}>
-          <Button>
-            <EditOutlined /> Mis vacunas
-          </Button>
+          <ModalBasic
+            button="Agregar Vacuna"
+            titleModal="Agregar Vacuna"
+            icon={<EditOutlined />}
+          >
+            <FormAddVacuna id_paciente={thisPaciente.id_paciente} />
+          </ModalBasic>
         </Col>
         <Col span={9}>
-          <Button>
-            <CommentOutlined /> Menciones
-          </Button>
+          <Link to={`/mis-menciones/${thisPaciente.id_paciente}`}>
+            <Button>
+              <CommentOutlined /> Menciones
+            </Button>
+          </Link>
         </Col>
       </Row>
       <Row justify="space-around" style={{ marginTop: 10 }}>
         <Col span={9}>
-          <Button>
-            <CalendarOutlined /> Calendario
-          </Button>
+          <Link to={`/mis-vacunas/${thisPaciente.id_paciente}`}>
+            <Button>
+              <EditOutlined /> Mis Vacunas
+            </Button>
+          </Link>
         </Col>
         <Col span={9}>
           <Button>

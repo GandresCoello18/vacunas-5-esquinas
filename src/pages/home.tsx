@@ -2,12 +2,15 @@ import { Row, Col, Divider } from "antd";
 import React from "react";
 import { CommentDiscucion } from "../component/discuciones/coment-disccion";
 import { FromDiscucion } from "../component/discuciones/form-discucion";
-import { ListDiscucionCantidad } from "../component/discuciones/list-discucion-cantidad";
 import { LineGraficoPeso } from "../component/graficos/line-peso";
 import { LineGraficoAltura } from "../component/graficos/line-altura";
 import { Layout } from "../component/layout";
 import { fecha_actual } from "../hooks/fecha";
 import moment from "moment";
+import { Discucion_Menciones_INT } from "../interface";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux";
+import { FormAddVacuna } from "../component/vacunas/form-add-vacuna";
 
 export function HomePage() {
   const styles = {
@@ -18,6 +21,10 @@ export function HomePage() {
       borderRadius: 10,
     },
   };
+
+  const Discuciones: Array<Discucion_Menciones_INT> = useSelector(
+    (state: RootState) => state.DiscucionesReducer.Discuciones
+  );
 
   return (
     <>
@@ -47,12 +54,12 @@ export function HomePage() {
               Discucciones: <u>{moment(fecha_actual()).format("LL")}</u>
             </h3>
             <Divider />
-            <CommentDiscucion />
+            <CommentDiscucion Discuciones={Discuciones} />
           </Col>
           <Col style={styles.box} xs={24} md={6}>
-            <h3>Cantidad mensajes</h3>
+            <h3>Agregar Vacuna para paciente</h3>
             <Divider />
-            <ListDiscucionCantidad />
+            <FormAddVacuna />
           </Col>
         </Row>
       </Layout>

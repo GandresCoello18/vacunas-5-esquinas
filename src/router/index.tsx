@@ -10,6 +10,8 @@ import { PubliceRoute } from "./public";
 import { AdminPage } from "../pages/admin";
 import { DiscucionesPage } from "../pages/discuciones";
 import { RepresentantePage } from "../pages/representante";
+import { MisMenciones } from "../pages/mis-menciones";
+import { MisVacunas } from "../pages/mis-vacunas";
 
 export default function Routes() {
   return (
@@ -27,6 +29,14 @@ export default function Routes() {
           <PrivateRoute
             path="/discuciones/:render"
             component={DiscucionesPage}
+          />
+          <PrivateRoute
+            path="/mis-menciones/:id_paciente"
+            component={MisMenciones}
+          />
+          <PrivateRoute
+            path="/mis-vacunas/:id_paciente"
+            component={MisVacunas}
           />
           <PrivateRoute path="/" component={HomePage} />
           <Route exact path="/404" component={NotFound} />

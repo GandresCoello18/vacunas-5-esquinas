@@ -69,3 +69,23 @@ export interface Comentario_Discucion_INT {
   photoURL: string;
   isAdmin: boolean | number;
 }
+
+export interface Vacuna_Paciente_INT {
+  readonly id_vacuna_paciente: string;
+  id_paciente: string;
+  id_usuario: string | undefined;
+  id_vacuna: number;
+  fecha_vacuna?: string;
+  observaciones: string;
+}
+
+export interface Vacuna_Paciente_Relacionado_INT {
+  fecha_vacuna: string;
+  observaciones: string;
+  id_vacuna_paciente: string;
+  id_usuario: string;
+  userName: string;
+  photoURL: string;
+  isAdmin: number | boolean;
+  vacuna_name: string;
+}

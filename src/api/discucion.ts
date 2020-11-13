@@ -11,9 +11,15 @@ export const createDiscucion = async (discucion: Discucion_INT) => {
 };
 
 export const getDiscucion = async (fecha: string) => {
-  console.log(fecha);
   return await axios({
     method: "GET",
     url: `${DOMAIN}/api/discucion/${fecha}`,
+  });
+};
+
+export const getMisMenciones = async (id_paciente: string) => {
+  return await axios({
+    method: "GET",
+    url: `${DOMAIN}/api/discucion/mis-menciones/${id_paciente}`,
   });
 };

@@ -45,8 +45,7 @@ export function CalendarioVacuna() {
               padding: 15,
             }}
           >
-            Enfermedades que se pueden prevenir con vacunas y las vacunas que
-            las previenen
+            Enfermedades que se pueden prevenir con vacunas
           </h3>
           <Divider />
 

@@ -2,8 +2,11 @@ import { Col, DatePicker, Input, Row, Select } from "antd";
 import moment from "moment";
 import React, { useState } from "react";
 import { fecha_actual } from "../../hooks/fecha";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux";
 import { DetallePaciente } from "../pacientes/datalle-paciente";
 import { CommentDiscucion } from "./coment-disccion";
+import { Discucion_Menciones_INT } from "../../interface";
 
 export function ReportesDiscuciones() {
   const styles = {
@@ -14,6 +17,10 @@ export function ReportesDiscuciones() {
       borderRadius: 10,
     },
   };
+
+  const Discuciones: Array<Discucion_Menciones_INT> = useSelector(
+    (state: RootState) => state.DiscucionesReducer.Discuciones
+  );
 
   const { Option } = Select;
 
@@ -59,7 +66,10 @@ export function ReportesDiscuciones() {
       </Row>
       <Row justify="space-around">
         <Col xs={22} md={17} style={styles.box}>
-          <CommentDiscucion setSelectPaciente={setSelectPaciente} />
+          <CommentDiscucion
+            Discuciones={Discuciones}
+            setSelectPaciente={setSelectPaciente}
+          />
         </Col>
         <Col xs={22} md={6} style={styles.box}>
           <DetallePaciente id_paciente={selectPaciente} />
