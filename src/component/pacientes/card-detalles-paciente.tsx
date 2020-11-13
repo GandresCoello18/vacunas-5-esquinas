@@ -4,7 +4,9 @@ import { DOMAIN } from "../../config/domain";
 import {
   CommentOutlined,
   EditOutlined,
+  ExpandAltOutlined,
   LineChartOutlined,
+  SolutionOutlined,
   UserSwitchOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -84,6 +86,18 @@ export function CardDetallePaciente({
         <Col span={9}>
           <Button>
             <LineChartOutlined /> Estadisticas
+          </Button>
+        </Col>
+      </Row>
+      <Row justify="space-around" style={{ marginTop: 10 }}>
+        <Col span={9}>
+          <Button>
+            <ExpandAltOutlined /> Peso y Altura
+          </Button>
+        </Col>
+        <Col span={9}>
+          <Button>
+            <SolutionOutlined /> Mis Datos
           </Button>
         </Col>
       </Row>
