@@ -1,41 +1,30 @@
 import { Avatar, Divider, List } from "antd";
 import moment from "moment";
 import React from "react";
-import { useSelector } from "react-redux";
-import { Vacunas_INT, Vacuna_Paciente_Relacionado_INT } from "../../interface";
-import { RootState } from "../../redux";
+import { Vacuna_Paciente_Relacionado_INT } from "../../interface";
 
 interface Props {
-  vacuna_paciente: Vacuna_Paciente_Relacionado_INT;
+  list: Array<Vacuna_Paciente_Relacionado_INT>;
 }
 
-export function ListItemVacunas({ vacuna_paciente }: Props) {
-  const vacunas: Array<Vacunas_INT> = useSelector(
-    (state: RootState) => state.VacunasReducer.Vacunas
-  );
-
+export function ListItemVacunas({ list }: Props) {
   return (
     <>
       <List itemLayout="horizontal">
-        {vacunas.map(
-          (vacuna) =>
-            vacuna.vacuna_name === vacuna_paciente.vacuna_name && (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar src={vacuna_paciente.photoURL} />}
-                  title={<b>{vacuna_paciente.userName}</b>}
-                  description={
-                    <>
-                      <p>{vacuna_paciente.observaciones}</p>
-                      <strong>
-                        {moment(vacuna_paciente.fecha_vacuna).format("LLL")}
-                      </strong>
-                    </>
-                  }
-                />
-              </List.Item>
-            )
-        )}
+        {list.map((list) => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={<Avatar src={list.photoURL} />}
+              title={<b>{list.userName}</b>}
+              description={
+                <>
+                  <p>{list.observaciones}</p>
+                  <strong>{moment(list.fecha_vacuna).format("LLL")}</strong>
+                </>
+              }
+            />
+          </List.Item>
+        ))}
       </List>
       <Divider />
     </>

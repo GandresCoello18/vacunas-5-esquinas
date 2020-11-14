@@ -14,6 +14,7 @@ import { Paciente_INT, Representantes_INT } from "../../interface";
 import { ModalBasic } from "../layout/modal";
 import { FormAddVacuna } from "../vacunas/form-add-vacuna";
 import { FormPesoAltura } from "./form-peso-altura";
+import { UpdateMisDatos } from "./update-mis-datos";
 
 interface Props {
   thisPaciente: Paciente_INT;
@@ -108,9 +109,13 @@ export function CardDetallePaciente({
           </ModalBasic>
         </Col>
         <Col span={9}>
-          <Button>
-            <SolutionOutlined /> Mis Datos
-          </Button>
+          <ModalBasic
+            button="Mis Datos"
+            titleModal="Mis Datos"
+            icon={<SolutionOutlined />}
+          >
+            <UpdateMisDatos paciente={thisPaciente} />
+          </ModalBasic>
         </Col>
       </Row>
       <Divider />

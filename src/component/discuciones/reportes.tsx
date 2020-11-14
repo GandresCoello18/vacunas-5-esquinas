@@ -1,4 +1,4 @@
-import { Col, DatePicker, Input, Row, Select } from "antd";
+import { Col, DatePicker, message, Row, Spin } from "antd";
 import moment from "moment";
 import React, { useState } from "react";
 import { fecha_actual } from "../../hooks/fecha";
@@ -7,6 +7,7 @@ import { RootState } from "../../redux";
 import { DetallePaciente } from "../pacientes/datalle-paciente";
 import { CommentDiscucion } from "./coment-disccion";
 import { Discucion_Menciones_INT } from "../../interface";
+import { getDiscucion } from "../../api/discucion";
 
 export function ReportesDiscuciones() {
   const styles = {
@@ -22,54 +23,52 @@ export function ReportesDiscuciones() {
     (state: RootState) => state.DiscucionesReducer.Discuciones
   );
 
-  const { Option } = Select;
-
+  const [dataSearch, setDataSearch] = useState<Array<Discucion_Menciones_INT>>(
+    []
+  );
   const [selectPaciente, setSelectPaciente] = useState<string>("");
-  const [selectSearch, setSelectSearch] = useState<string>("codigo");
-  const [SearchValue, setSearchValue] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [SearchValue, setSearchValue] = useState<string>(fecha_actual());
+
+  const selectDate = async (date: any, dateString: string) => {
+    setSearchValue(dateString);
+    setIsLoading(true);
+
+    try {
+      const res = await (await getDiscucion(dateString)).data;
+      setDataSearch(res);
+    } catch (error) {
+      message.error(error.message);
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <>
       <h3 style={{ textAlign: "center", fontSize: 20, padding: 10 }}>
-        Reportes de discuciones: <u>"{moment(fecha_actual()).format("LL")}"</u>
+        Reportes de discuciones: <u>"{moment(SearchValue).format("LL")}"</u>
       </h3>
       <br />
       <Row justify="center">
         <Col xs={1}>
-          <h4>Buscar: {SearchValue}</h4>
-        </Col>
-        <Col xs={3}>
-          <Select
-            defaultValue="codigo"
-            style={{ width: "100%" }}
-            onChange={(value) => setSelectSearch(value)}
-          >
-            <Option value="codigo">codigo del paciente</Option>
-            <Option value="fecha">fecha de discucion</Option>
-          </Select>
+          <h4>Buscar: </h4>
         </Col>
         &nbsp;
         <Col xs={3}>
-          {selectSearch === "codigo" ? (
-            <Input
-              placeholder="Codigo del paciente aqui..."
-              onChange={(event) => setSearchValue(event.target.value)}
-            />
-          ) : (
-            <DatePicker
-              onChange={(date: any, dateString: string) =>
-                setSearchValue(dateString)
-              }
-            />
-          )}
+          <DatePicker onChange={selectDate} />
         </Col>
       </Row>
       <Row justify="space-around">
         <Col xs={22} md={17} style={styles.box}>
-          <CommentDiscucion
-            Discuciones={Discuciones}
-            setSelectPaciente={setSelectPaciente}
-          />
+          {isLoading ? (
+            <Spin size="large" />
+          ) : (
+            <CommentDiscucion
+              Discuciones={dataSearch ? dataSearch : Discuciones}
+              setSelectPaciente={setSelectPaciente}
+            />
+          )}
         </Col>
         <Col xs={22} md={6} style={styles.box}>
           <DetallePaciente id_paciente={selectPaciente} />
