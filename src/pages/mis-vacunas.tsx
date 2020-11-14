@@ -26,7 +26,7 @@ export function MisVacunas() {
   const [misVacunas, setMisVacunas] = useState<
     Array<Vacuna_Paciente_Relacionado_INT>
   >([]);
-  console.log(misVacunas);
+
   const params: Params = useParams();
 
   useEffect(() => {

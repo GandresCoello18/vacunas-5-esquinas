@@ -89,3 +89,11 @@ export interface Vacuna_Paciente_Relacionado_INT {
   isAdmin: number | boolean;
   vacuna_name: string;
 }
+
+export interface Peso_Altura_INT {
+  id_seguimiento: string;
+  peso: number;
+  altura: number;
+  id_paciente: string;
+  fecha_seguimineto?: string;
+}

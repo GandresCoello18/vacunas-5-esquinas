@@ -12,6 +12,7 @@ import { DiscucionesPage } from "../pages/discuciones";
 import { RepresentantePage } from "../pages/representante";
 import { MisMenciones } from "../pages/mis-menciones";
 import { MisVacunas } from "../pages/mis-vacunas";
+import { MisEstadisticas } from "../pages/mis-estadisticas";
 
 export default function Routes() {
   return (
@@ -37,6 +38,10 @@ export default function Routes() {
           <PrivateRoute
             path="/mis-vacunas/:id_paciente"
             component={MisVacunas}
+          />
+          <PrivateRoute
+            path="/mis-estadisticas/:id_paciente"
+            component={MisEstadisticas}
           />
           <PrivateRoute path="/" component={HomePage} />
           <Route exact path="/404" component={NotFound} />

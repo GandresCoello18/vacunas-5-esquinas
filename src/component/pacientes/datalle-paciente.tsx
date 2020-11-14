@@ -22,6 +22,8 @@ export function DetallePaciente({ id_paciente }: Props) {
     img: "",
   });
 
+  const [isReload, setIsReload] = useState<boolean>(false);
+
   const [thisRepresentante, setThisRepresentante] = useState<
     Representantes_INT | undefined
   >({
@@ -48,13 +50,16 @@ export function DetallePaciente({ id_paciente }: Props) {
       (repre) => repre.cedula === findPaciente?.id_representante
     );
     setThisRepresentante(findRepresentante);
-  }, [Pacientes, Representantes, id_paciente]);
+
+    isReload && setIsReload(false);
+  }, [Pacientes, Representantes, id_paciente, isReload, setIsReload]);
 
   return (
     <>
       {thisPaciente ? (
         <>
           <CardDetallePaciente
+            setIsReload={setIsReload}
             thisPaciente={thisPaciente}
             thisRepresentante={thisRepresentante}
           />

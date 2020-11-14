@@ -13,14 +13,17 @@ import { Link } from "react-router-dom";
 import { Paciente_INT, Representantes_INT } from "../../interface";
 import { ModalBasic } from "../layout/modal";
 import { FormAddVacuna } from "../vacunas/form-add-vacuna";
+import { FormPesoAltura } from "./form-peso-altura";
 
 interface Props {
   thisPaciente: Paciente_INT;
+  setIsReload?: Function | any;
   thisRepresentante: Representantes_INT | undefined;
 }
 
 export function CardDetallePaciente({
   thisPaciente,
+  setIsReload,
   thisRepresentante,
 }: Props) {
   return (
@@ -84,16 +87,25 @@ export function CardDetallePaciente({
           </Link>
         </Col>
         <Col span={9}>
-          <Button>
-            <LineChartOutlined /> Estadisticas
-          </Button>
+          <Link to={`/mis-estadisticas/${thisPaciente.id_paciente}`}>
+            <Button>
+              <LineChartOutlined /> Estadisticas
+            </Button>
+          </Link>
         </Col>
       </Row>
       <Row justify="space-around" style={{ marginTop: 10 }}>
         <Col span={9}>
-          <Button>
-            <ExpandAltOutlined /> Peso y Altura
-          </Button>
+          <ModalBasic
+            button="Peso y Altura"
+            titleModal="Peso y Altura"
+            icon={<ExpandAltOutlined />}
+          >
+            <FormPesoAltura
+              setIsReload={setIsReload}
+              id_paciente={thisPaciente.id_paciente}
+            />
+          </ModalBasic>
         </Col>
         <Col span={9}>
           <Button>
