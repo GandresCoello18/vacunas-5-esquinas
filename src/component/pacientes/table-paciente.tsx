@@ -50,6 +50,7 @@ export function TablePaciente({ limit, setIdPaciente }: props) {
         <Col span={3}>Apellido</Col>
         <Col span={2}>Peso</Col>
         <Col span={2}>Altura</Col>
+        <Col span={2}>Tempe</Col>
         <Col span={3}>{limit ? "Foto" : "Optiones"}</Col>
       </Row>
       {PacienteReducer.loading && <Skeleton />}
@@ -66,6 +67,9 @@ export function TablePaciente({ limit, setIdPaciente }: props) {
           </Col>
           <Col span={2}>
             <b>CM: </b> {item.altura}
+          </Col>
+          <Col span={2}>
+            <b>GC: </b> {item.temperatura}
           </Col>
           <Col span={3}>
             {limit ? (

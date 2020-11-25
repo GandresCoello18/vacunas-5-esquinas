@@ -22,12 +22,13 @@ export function FormPesoAltura({ id_paciente, setIsReload }: Props) {
 
   const send = async (data: any) => {
     setIsLoading(true);
-    const { peso, altura } = data;
+    const { peso, altura, temperatura } = data;
 
     try {
       const seguimiento: Peso_Altura_INT = {
         id_seguimiento: "",
         peso,
+        temperatura,
         altura,
         id_paciente,
       };
@@ -73,6 +74,18 @@ export function FormPesoAltura({ id_paciente, setIsReload }: Props) {
             type="number"
             placeholder="Ingrese la altura por centimetro."
           />
+        </Form.Item>
+        <Form.Item
+          name="temperatura"
+          label="Temperatura por grados centigrados"
+          rules={[
+            {
+              required: true,
+              message: "Ingrese la temperatura.",
+            },
+          ]}
+        >
+          <Input type="number" placeholder="Ingrese la temperatura." />
         </Form.Item>
         <Form.Item>
           <Button htmlType="submit" type="primary" loading={isLoading}>

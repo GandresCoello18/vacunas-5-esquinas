@@ -58,7 +58,7 @@ export function IngresoPaciente(): JSX.Element {
   }, [Representante]);
 
   const sendPaciente = async (data: any) => {
-    const { altura, apellidos, nacimiento, nombres, peso } = data;
+    const { altura, apellidos, nacimiento, nombres, peso, temperatura } = data;
     setIsLoading(true);
 
     const obj: Paciente_INT = {
@@ -67,6 +67,7 @@ export function IngresoPaciente(): JSX.Element {
       apellidos,
       altura,
       peso,
+      temperatura,
       nacimiento: moment(nacimiento._d).format(),
       codigo: "",
       id_representante: SelectRepre,
@@ -169,33 +170,8 @@ export function IngresoPaciente(): JSX.Element {
             >
               <Input placeholder="Ingrese los apellidos." />
             </Form.Item>
-            <Divider />
-            <h3 style={{ textAlign: "center" }}>Representantes</h3>
             <Row justify="space-around">
-              <Col span={12}>
-                <Select
-                  defaultValue="Seleccionar...."
-                  style={{ width: "100%" }}
-                  onChange={(value) => setSelectRepre(Number(value))}
-                >
-                  {StateRepresent.map((represent: Representantes_INT) => (
-                    <Option value={represent.cedula}>
-                      {represent.nombres} {represent.apellidos} -{" "}
-                      {represent.cedula}
-                    </Option>
-                  ))}
-                </Select>
-              </Col>
-              <Col span={6}>
-                <Input
-                  placeholder="Cedula del representante"
-                  onChange={searchRepresent}
-                />
-              </Col>
-            </Row>
-            <Divider />
-            <Row justify="space-around">
-              <Col span={10}>
+              <Col span={7}>
                 <Form.Item
                   name="peso"
                   label="Peso"
@@ -209,7 +185,7 @@ export function IngresoPaciente(): JSX.Element {
                   <Input type="number" placeholder="Ingrese el peso." />
                 </Form.Item>
               </Col>
-              <Col span={10}>
+              <Col span={7}>
                 <Form.Item
                   name="altura"
                   label="Altura"
@@ -221,6 +197,20 @@ export function IngresoPaciente(): JSX.Element {
                   ]}
                 >
                   <Input type="number" placeholder="Ingrese la altura." />
+                </Form.Item>
+              </Col>
+              <Col span={7}>
+                <Form.Item
+                  name="temperatura"
+                  label="Temperatura"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Escriba la temperatura.",
+                    },
+                  ]}
+                >
+                  <Input type="number" placeholder="Ingrese la temperatura." />
                 </Form.Item>
               </Col>
             </Row>
@@ -254,6 +244,31 @@ export function IngresoPaciente(): JSX.Element {
                 </Form.Item>
               </Col>
             </Row>
+            <Divider />
+            <h3 style={{ textAlign: "center" }}>Representantes</h3>
+            <Row justify="space-around">
+              <Col span={12}>
+                <Select
+                  defaultValue="Seleccionar...."
+                  style={{ width: "100%" }}
+                  onChange={(value) => setSelectRepre(Number(value))}
+                >
+                  {StateRepresent.map((represent: Representantes_INT) => (
+                    <Option value={represent.cedula}>
+                      {represent.nombres} {represent.apellidos} -{" "}
+                      {represent.cedula}
+                    </Option>
+                  ))}
+                </Select>
+              </Col>
+              <Col span={6}>
+                <Input
+                  placeholder="Cedula del representante"
+                  onChange={searchRepresent}
+                />
+              </Col>
+            </Row>
+            <Divider />
             <Row>
               <Col>
                 <Button htmlType="submit" type="primary" loading={isLoading}>
@@ -357,7 +372,7 @@ export function IngresoPaciente(): JSX.Element {
           <h3 style={{ textAlign: "center", padding: 10 }}>
             Representante recientes
           </h3>
-          <TableRepresentante limit={0} />
+          <TableRepresentante limit={2} />
         </Col>
       </Row>
     </>

@@ -81,6 +81,7 @@ export const doGoogleLoginAction = (user: Usuario_INT | any) => (
       userName: user.displayName,
       email: user.email,
       photoURL: user.photoURL,
+      isAdmin: user.email === "goyeselcoca@gmail.com" ? true : false,
     },
   });
 };

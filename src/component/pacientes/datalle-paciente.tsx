@@ -18,6 +18,7 @@ export function DetallePaciente({ id_paciente }: Props) {
     id_representante: 0,
     codigo: "",
     peso: "",
+    temperatura: "",
     altura: "",
     img: "",
   });

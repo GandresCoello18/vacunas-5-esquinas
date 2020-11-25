@@ -15,6 +15,7 @@ export interface Paciente_INT {
   nacimiento: string;
   peso: string;
   altura: string;
+  temperatura: string;
   codigo: string;
   id_representante?: number | any;
   img?: string;
@@ -99,6 +100,7 @@ export interface Peso_Altura_INT {
   id_seguimiento: string;
   peso: number;
   altura: number;
+  temperatura: number;
   id_paciente: string;
   fecha_seguimiento?: string;
 }

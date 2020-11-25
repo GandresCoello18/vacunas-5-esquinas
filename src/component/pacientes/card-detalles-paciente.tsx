@@ -44,14 +44,19 @@ export function CardDetallePaciente({
           </h2>
           <br />
           <Row justify="space-around">
-            <Col span={3}>
+            <Col span={4}>
               <Tag color="purple">
                 Peso: <strong>{thisPaciente.peso}</strong> KLG
               </Tag>
             </Col>
-            <Col span={3}>
+            <Col span={4}>
               <Tag color="volcano">
                 Altura: <strong>{thisPaciente.altura}</strong> CM
+              </Tag>
+            </Col>
+            <Col span={4}>
+              <Tag color="processing">
+                Tempert: <strong>{thisPaciente.temperatura}</strong> GC
               </Tag>
             </Col>
           </Row>
