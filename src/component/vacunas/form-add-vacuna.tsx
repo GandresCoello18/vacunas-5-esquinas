@@ -1,8 +1,11 @@
-import { Button, Form, Input, message, Select } from "antd";
+import { Alert, Button, Form, Input, message, Select } from "antd";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { RegisterVacunaPaciente } from "../../api/vacuna-paciente";
+import {
+  GetCountPacienteVacuna,
+  RegisterVacunaPaciente,
+} from "../../api/vacuna-paciente";
 import {
   Paciente_INT,
   Vacunas_INT,
@@ -20,6 +23,8 @@ export function FormAddVacuna({ id_paciente }: Props) {
   const { TextArea } = Input;
 
   const [isLoading, setiIsLoading] = useState<boolean>(false);
+  const [selectPaciente, setSelectPaciente] = useState<string>("");
+  const [feedback, setFeedback] = useState<string>("");
 
   const vacunas: Array<Vacunas_INT> = useSelector(
     (state: RootState) => state.VacunasReducer.Vacunas
@@ -41,15 +46,32 @@ export function FormAddVacuna({ id_paciente }: Props) {
         id_usuario: Cookies.get("id-user"),
       };
 
-      await RegisterVacunaPaciente(pv);
+      const resPV = await RegisterVacunaPaciente(pv);
 
-      form.resetFields();
-      message.success("Se guardo el registro con exito");
+      if (resPV.data.feeback) {
+        setFeedback(resPV.data.feeback);
+        message.info(resPV.data.feeback);
+      } else {
+        form.resetFields();
+        message.success("Se guardo el registro con exito");
+      }
     } catch (error) {
       message.error(error.message);
     }
 
     setiIsLoading(false);
+  };
+
+  const selectVacuna = async (value: number) => {
+    try {
+      const count = await GetCountPacienteVacuna(
+        id_paciente ? id_paciente : selectPaciente,
+        value
+      );
+      setFeedback(count.data.feeback);
+    } catch (error) {
+      message.error(error.message);
+    }
   };
 
   return (
@@ -68,6 +90,7 @@ export function FormAddVacuna({ id_paciente }: Props) {
           <Select
             style={{ width: "100%" }}
             placeholder="Seleccione el tipo de vacuna"
+            onChange={selectVacuna}
           >
             {vacunas.map((vacuna) => (
               <Option value={vacuna.id_vacuna}>{vacuna.vacuna_name}</Option>
@@ -88,6 +111,7 @@ export function FormAddVacuna({ id_paciente }: Props) {
             <Select
               style={{ width: "100%" }}
               placeholder="Seleccion el paciente"
+              onChange={(value: string) => setSelectPaciente(value)}
             >
               {Pacientes.map((paciente) => (
                 <Option value={paciente.id_paciente}>
@@ -115,6 +139,12 @@ export function FormAddVacuna({ id_paciente }: Props) {
           </Button>
         </Form.Item>
       </Form>
+      {feedback && (
+        <>
+          <br />
+          <Alert type="info" message={feedback} />
+        </>
+      )}
     </>
   );
 }

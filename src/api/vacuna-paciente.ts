@@ -20,3 +20,13 @@ export const GetPacienteVacuna = async (id_usuarios: string) => {
     url: `${DOMAIN}/api/vacuna-paciente/${id_usuarios}`,
   });
 };
+
+export const GetCountPacienteVacuna = async (
+  id_usuarios: string,
+  id_vacuna: number
+) => {
+  return await axios({
+    method: "GET",
+    url: `${DOMAIN}/api/vacuna-paciente/${id_usuarios}/${id_vacuna}`,
+  });
+};

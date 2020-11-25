@@ -23,3 +23,7 @@ function agregar_ceros_dia(dia: number) {
   }
   return dia;
 }
+
+export function incrementarMes(nacimiento: any, meses: number) {
+  return new Date(nacimiento).setMonth(new Date(nacimiento).getMonth() + meses);
+}
