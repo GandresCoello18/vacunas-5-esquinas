@@ -26,3 +26,21 @@ export const GetSession = async (id_usuarios: string) => {
     url: `${DOMAIN}/api/usuario/session/${id_usuarios}`,
   });
 };
+
+////// PETICION DELETE
+
+export const DeleteUser = async (id_usuarios: string) => {
+  return await axios({
+    method: "DELETE",
+    url: `${DOMAIN}/api/usuario/${id_usuarios}`,
+  });
+};
+
+////// PETICION PUT
+
+export const PutRolUser = async (id_usuarios: string) => {
+  return await axios({
+    method: "PUT",
+    url: `${DOMAIN}/api/usuario/rol/${id_usuarios}`,
+  });
+};

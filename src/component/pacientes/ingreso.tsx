@@ -18,7 +18,7 @@ import { Paciente_INT, Representantes_INT } from "../../interface";
 import { Dispatch, RootState } from "../../redux";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { setRepresentante } from "../../redux/modulos/representante";
+import { SetRepresentante } from "../../redux/modulos/representante";
 import { setPacientes } from "../../redux/modulos/pacientes";
 import { CreatePaciente } from "../../api/paciente";
 
@@ -123,7 +123,7 @@ export function IngresoPaciente(): JSX.Element {
         message.success(
           `Se registro el representante con la CI: ${obj.cedula}`
         );
-        dispatch(setRepresentante([...Representante, ...resRepre.data]));
+        dispatch(SetRepresentante([...Representante, ...resRepre.data]));
         formRepresentante.resetFields();
       }
     } catch (error) {

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Row, Col } from "antd";
 import { TablePaciente } from "./table-paciente";
 import { DetallePaciente } from "./datalle-paciente";
+import { Usuario_INT } from "../../interface";
+import { RootState } from "../../redux";
+import { useSelector } from "react-redux";
 
 export function ReportePaciente() {
   const styles = {
@@ -15,6 +18,10 @@ export function ReportePaciente() {
 
   const [IdPaciente, setIdPaciente] = useState<string>("");
 
+  const Session: Usuario_INT = useSelector(
+    (state: RootState) => state.SessionReducer.MyUser
+  );
+
   return (
     <>
       <h3 style={{ textAlign: "center", fontSize: 20, padding: 10 }}>
@@ -25,7 +32,7 @@ export function ReportePaciente() {
           <TablePaciente setIdPaciente={setIdPaciente} />
         </Col>
         <Col xs={22} md={6} style={styles.box}>
-          <DetallePaciente id_paciente={IdPaciente} />
+          <DetallePaciente id_paciente={IdPaciente} isAdmin={Session.isAdmin} />
         </Col>
       </Row>
     </>

@@ -1,8 +1,10 @@
 import { Button, Col, Form, Input, message, Row, Select } from "antd";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { UpdatePacientes } from "../../api/paciente";
+import { setPacientes } from "../../redux/modulos/pacientes";
 import { Paciente_INT, Representantes_INT } from "../../interface";
-import { RootState } from "../../redux";
+import { RootState, Dispatch } from "../../redux";
 
 interface Props {
   paciente: Paciente_INT;
@@ -10,6 +12,7 @@ interface Props {
 
 export function UpdateMisDatos({ paciente }: Props) {
   const [form] = Form.useForm();
+  const dispatch: Dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
@@ -19,10 +22,33 @@ export function UpdateMisDatos({ paciente }: Props) {
     (state: RootState) => state.Representantes.Representante
   );
 
+  const Paciente: Array<Paciente_INT> = useSelector(
+    (state: RootState) => state.PacienteReducer.Pacientes
+  );
+
   const send = async (data: any) => {
+    const { nombres, apellidos, representante } = data;
     setIsLoading(true);
 
     try {
+      const update = await UpdatePacientes(
+        paciente.id_paciente,
+        nombres,
+        apellidos,
+        representante
+      );
+
+      if (update.data.feeback) {
+        message.error(update.data.feeback);
+        return false;
+      }
+
+      if (update.data.removed) {
+        dispatch(setPacientes([...update.data.paciente, ...Paciente]));
+        message.success("Se actualizaron los datos del paciente");
+      } else {
+        message.error("Ocurrio un error al actualizar los datos");
+      }
     } catch (error) {
       message.error(error.message);
     }
@@ -65,44 +91,6 @@ export function UpdateMisDatos({ paciente }: Props) {
             defaultValue={paciente.apellidos}
           />
         </Form.Item>
-        <Row justify="space-around">
-          <Col span={10}>
-            <Form.Item
-              name="peso"
-              label="Peso"
-              rules={[
-                {
-                  required: true,
-                  message: "Ingrese tu peso.",
-                },
-              ]}
-            >
-              <Input
-                placeholder="Ingrese su peso."
-                disabled={!isUpdate}
-                defaultValue={paciente.peso}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={10}>
-            <Form.Item
-              name="altura"
-              label="Altura"
-              rules={[
-                {
-                  required: true,
-                  message: "Ingrese tu altura.",
-                },
-              ]}
-            >
-              <Input
-                placeholder="Ingrese tu altura."
-                disabled={!isUpdate}
-                defaultValue={paciente.altura}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
         <Form.Item
           name="representante"
           label="Representante"
@@ -115,6 +103,7 @@ export function UpdateMisDatos({ paciente }: Props) {
         >
           <Select
             style={{ width: "100%" }}
+            defaultValue={paciente.id_representante}
             disabled={!isUpdate}
             placeholder="Selecciona el representante..."
           >

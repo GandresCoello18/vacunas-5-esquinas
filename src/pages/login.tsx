@@ -71,7 +71,11 @@ export function LoginPage() {
             ? message.info(resLogin.data.feeback)
             : message.info("Ingreso exitoso");
 
-          history.push("/");
+          if (resLogin.data.usuario[0].isAdmin) {
+            history.push("/pacientes/reportes");
+          } else {
+            history.push("/");
+          }
         })
         .catch((err) => {
           message.error(err.message);

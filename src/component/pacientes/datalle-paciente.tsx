@@ -7,9 +7,10 @@ import { CardDetallePaciente } from "./card-detalles-paciente";
 
 interface Props {
   id_paciente?: string;
+  isAdmin?: boolean | number | undefined;
 }
 
-export function DetallePaciente({ id_paciente }: Props) {
+export function DetallePaciente({ id_paciente, isAdmin }: Props) {
   const [thisPaciente, setThisPaciente] = useState<Paciente_INT | undefined>({
     id_paciente: "",
     nombres: "",
@@ -63,6 +64,7 @@ export function DetallePaciente({ id_paciente }: Props) {
             setIsReload={setIsReload}
             thisPaciente={thisPaciente}
             thisRepresentante={thisRepresentante}
+            isAdmin={isAdmin}
           />
         </>
       ) : (

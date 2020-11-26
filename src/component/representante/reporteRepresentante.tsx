@@ -4,7 +4,7 @@ import { Row, Col, Empty, Divider } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import { CardDetallePaciente } from "../pacientes/card-detalles-paciente";
-import { Paciente_INT } from "../../interface";
+import { Paciente_INT, Usuario_INT } from "../../interface";
 
 export function ReporteRepresentante() {
   const styles = {
@@ -22,6 +22,10 @@ export function ReporteRepresentante() {
 
   const Pacientes: Array<Paciente_INT> = useSelector(
     (state: RootState) => state.PacienteReducer.Pacientes
+  );
+
+  const Session: Usuario_INT = useSelector(
+    (state: RootState) => state.SessionReducer.MyUser
   );
 
   useEffect(() => {
@@ -49,6 +53,7 @@ export function ReporteRepresentante() {
                 <CardDetallePaciente
                   thisPaciente={paciente}
                   thisRepresentante={undefined}
+                  isAdmin={Session.isAdmin}
                 />
                 <Divider />
               </>

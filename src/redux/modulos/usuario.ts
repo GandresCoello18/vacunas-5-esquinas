@@ -45,7 +45,7 @@ export const getUsuarios = (id_usuario: string | any) => (
   });
 };
 
-export const getMyUser = (usuarios: any) => (dispatch: Dispatch) => {
+export const SetUsuarios = (usuarios: any) => (dispatch: Dispatch) => {
   dispatch({
     type: SET_USUARIOS,
     payload: usuarios,

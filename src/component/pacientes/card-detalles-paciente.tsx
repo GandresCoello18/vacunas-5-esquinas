@@ -20,12 +20,14 @@ interface Props {
   thisPaciente: Paciente_INT;
   setIsReload?: Function | any;
   thisRepresentante: Representantes_INT | undefined;
+  isAdmin?: number | boolean | undefined;
 }
 
 export function CardDetallePaciente({
   thisPaciente,
   setIsReload,
   thisRepresentante,
+  isAdmin,
 }: Props) {
   return (
     <>
@@ -113,15 +115,19 @@ export function CardDetallePaciente({
             />
           </ModalBasic>
         </Col>
-        <Col span={9}>
-          <ModalBasic
-            button="Mis Datos"
-            titleModal="Mis Datos"
-            icon={<SolutionOutlined />}
-          >
-            <UpdateMisDatos paciente={thisPaciente} />
-          </ModalBasic>
-        </Col>
+        {isAdmin ? (
+          <Col span={9}>
+            <ModalBasic
+              button="Mis Datos"
+              titleModal="Mis Datos"
+              icon={<SolutionOutlined />}
+            >
+              <UpdateMisDatos paciente={thisPaciente} />
+            </ModalBasic>
+          </Col>
+        ) : (
+          ""
+        )}
       </Row>
       <Divider />
       {thisRepresentante !== undefined && (
@@ -139,13 +145,6 @@ export function CardDetallePaciente({
           <br />
         </>
       )}
-
-      <Button
-        style={{ position: "relative", width: "90%", bottom: 10, left: 20 }}
-        danger
-      >
-        Eliminar
-      </Button>
     </>
   );
 }

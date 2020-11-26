@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, Alert, Tag, Skeleton } from "antd";
-import { useSelector } from "react-redux";
-import { Representantes_INT } from "../../interface";
-import { RootState } from "../../redux";
+import { Row, Col, Button, Alert, Tag, Skeleton, message } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { Representantes_INT, Usuario_INT } from "../../interface";
+import { RootState, Dispatch } from "../../redux";
+import { SetRepresentante } from "../../redux/modulos/representante";
 import { DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
+import { DeleteRepresentante } from "../../api/representante";
 
 interface props {
   limit?: number;
@@ -28,20 +30,45 @@ export function TableRepresentante({ limit, setSelectRepresentante }: props) {
     },
   };
 
-  const [Representante, setRepresentante] = useState<Array<Representantes_INT>>(
-    []
-  );
+  const dispatch: Dispatch = useDispatch();
+
+  const [Representante, setRepresentanteState] = useState<
+    Array<Representantes_INT>
+  >([]);
   const RepresentanteReducer = useSelector(
     (state: RootState) => state.Representantes
   );
 
+  const Session: Usuario_INT = useSelector(
+    (state: RootState) => state.SessionReducer.MyUser
+  );
+
   useEffect(() => {
     if (limit) {
-      setRepresentante(RepresentanteReducer.Representante.splice(limit));
+      setRepresentanteState(RepresentanteReducer.Representante.splice(limit));
     } else {
-      setRepresentante(RepresentanteReducer.Representante);
+      setRepresentanteState(RepresentanteReducer.Representante);
     }
   }, [limit, RepresentanteReducer]);
+
+  const eliminar_repre = async (cedula: number) => {
+    try {
+      const eliminar = await DeleteRepresentante(cedula);
+
+      if (eliminar.data.removed) {
+        message.success("Se elimino el representante");
+        const index = RepresentanteReducer.Representante.findIndex(
+          (item: Representantes_INT) => item.cedula === cedula
+        );
+        RepresentanteReducer.Representante.splice(index, 1);
+        dispatch(SetRepresentante([...RepresentanteReducer.Representante]));
+      } else {
+        message.error("Ocurrio un error en eliminar el representante");
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -64,9 +91,13 @@ export function TableRepresentante({ limit, setSelectRepresentante }: props) {
           <Col span={3}>{item.nombres}</Col>
           <Col span={3}>{item.apellidos}</Col>
           <Col span={3}>
-            <Button danger>
-              <DeleteOutlined />
-            </Button>
+            {Session.isAdmin ? (
+              <Button danger onClick={() => eliminar_repre(item.cedula)}>
+                <DeleteOutlined />
+              </Button>
+            ) : (
+              ""
+            )}
             {!limit && (
               <>
                 &nbsp; &nbsp;

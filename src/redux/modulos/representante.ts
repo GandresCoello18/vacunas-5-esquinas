@@ -43,7 +43,7 @@ export const getRepresentante = () => (dispatch: Dispatch) => {
   });
 };
 
-export const setRepresentante = (representantes: any) => (
+export const SetRepresentante = (representantes: any) => (
   dispatch: Dispatch
 ) => {
   dispatch({

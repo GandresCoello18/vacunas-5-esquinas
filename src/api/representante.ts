@@ -20,3 +20,12 @@ export const GetRepresentante = async () => {
     url: `${DOMAIN}/api/representante`,
   });
 };
+
+///// PETICION DELETE
+
+export const DeleteRepresentante = async (cedula: number) => {
+  return await axios({
+    method: "DELETE",
+    url: `${DOMAIN}/api/representante/${cedula}`,
+  });
+};

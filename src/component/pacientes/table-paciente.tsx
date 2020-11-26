@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, Tag, Skeleton, Alert, Avatar } from "antd";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux";
-import { Paciente_INT } from "../../interface";
+import { Row, Col, Button, Tag, Skeleton, Alert, Avatar, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, Dispatch } from "../../redux";
+import { setPacientes } from "../../redux/modulos/pacientes";
+import { Paciente_INT, Usuario_INT } from "../../interface";
 import { DeleteOutlined, AuditOutlined } from "@ant-design/icons";
 import { DOMAIN } from "../../config/domain";
+import { DeletePacientes } from "../../api/paciente";
 
 interface props {
   limit?: number;
@@ -29,9 +31,15 @@ export function TablePaciente({ limit, setIdPaciente }: props) {
     },
   };
 
+  const dispatch: Dispatch = useDispatch();
+
   const [Paciente, setPaciente] = useState<Array<Paciente_INT>>([]);
   const PacienteReducer = useSelector(
     (state: RootState) => state.PacienteReducer
+  );
+
+  const Session: Usuario_INT = useSelector(
+    (state: RootState) => state.SessionReducer.MyUser
   );
 
   useEffect(() => {
@@ -41,6 +49,25 @@ export function TablePaciente({ limit, setIdPaciente }: props) {
       setPaciente(PacienteReducer.Pacientes);
     }
   }, [limit, PacienteReducer]);
+
+  const deletePaciente = async (id_user: string) => {
+    try {
+      const eliminar = await DeletePacientes(id_user);
+
+      if (eliminar.data.removed) {
+        message.success("Se elimino el usuario");
+        const index = PacienteReducer.Pacientes.findIndex(
+          (item: Paciente_INT) => item.id_paciente === id_user
+        );
+        PacienteReducer.Pacientes.splice(index, 1);
+        dispatch(setPacientes([...PacienteReducer.Pacientes]));
+      } else {
+        message.error("Ocurrio un error al eliminar el paciente");
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -76,10 +103,19 @@ export function TablePaciente({ limit, setIdPaciente }: props) {
               <Avatar src={`${DOMAIN}/static/pacientes/${item.img}`} />
             ) : (
               <>
-                <Button danger>
-                  <DeleteOutlined />
-                </Button>
-                &nbsp; &nbsp;
+                {Session.isAdmin ? (
+                  <>
+                    <Button
+                      danger
+                      onClick={() => deletePaciente(item.id_paciente)}
+                    >
+                      <DeleteOutlined />
+                    </Button>
+                    &nbsp; &nbsp;
+                  </>
+                ) : (
+                  ""
+                )}
                 <Button
                   type="primary"
                   onClick={() => setIdPaciente(item.id_paciente)}
