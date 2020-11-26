@@ -1,4 +1,4 @@
-import { UserAddOutlined } from "@ant-design/icons";
+import { UserAddOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import { Alert, Button, Col, Row, Skeleton, Tag } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import moment from "moment";
@@ -34,8 +34,8 @@ export function TablesUsuario() {
       <Row justify="space-between" style={Styles.head_table}>
         <Col span={3}>Usuario</Col>
         <Col span={3}>Estado</Col>
-        <Col span={3}>Email</Col>
-        <Col span={3}>Se registro</Col>
+        <Col span={5}>Email</Col>
+        <Col span={4}>Se registro</Col>
         <Col span={3}>Foto</Col>
         <Col span={3}>Is Admin</Col>
         <Col span={3}>Opciones</Col>
@@ -62,19 +62,25 @@ export function TablesUsuario() {
               {user.status}
             </Tag>
           </Col>
-          <Col span={3}>{user.email}</Col>
-          <Col span={3}>{moment(user.fecha_registro).format("LL")}</Col>
+          <Col span={5}>{user.email}</Col>
+          <Col span={4}>{moment(user.fecha_registro).format("LL")}</Col>
           <Col span={3}>
             <Avatar src={user.photoURL} />
           </Col>
           <Col span={3}>
-            <Tag color={user.isAdmin === 1 ? "gold" : "processing"}>
-              {user.isAdmin}
-            </Tag>
+            {user.isAdmin ? (
+              <Tag color="green">Si</Tag>
+            ) : (
+              <Tag color="red">No</Tag>
+            )}
           </Col>
           <Col span={3}>
             <Button danger>
               <UserAddOutlined />
+            </Button>
+            &nbsp; &nbsp;
+            <Button type="primary">
+              <UserSwitchOutlined />
             </Button>
           </Col>
         </Row>

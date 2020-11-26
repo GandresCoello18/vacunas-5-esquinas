@@ -94,6 +94,7 @@ export function IngresoPaciente(): JSX.Element {
       } else {
         dispatch(setPacientes([...Pacientes, ...resPaciente.data]));
         formPaciente.resetFields();
+        message.success("SE CREO UN NUEVO PACIENTE");
       }
     } else {
       message.error("Seleccione algun representante");
@@ -235,7 +236,7 @@ export function IngresoPaciente(): JSX.Element {
                   label="Fotografia"
                   rules={[
                     {
-                      required: true,
+                      required: false,
                       message: "Suba una fotografia.",
                     },
                   ]}
