@@ -6,10 +6,10 @@ import {
   Discucion_INT,
   Discucion_Menciones_INT,
   Paciente_INT,
+  Usuario_INT,
 } from "../../interface";
 import { createDiscucion } from "../../api/discucion";
 import { setDiscuciones } from "../../redux/modulos/discucion";
-import { AUTH_USER } from "../../config/domain";
 import { ArrayMencion } from "../../hooks/mencion-array";
 
 export function FromDiscucion() {
@@ -25,6 +25,9 @@ export function FromDiscucion() {
   const Discuciones: Array<Discucion_Menciones_INT> = useSelector(
     (state: RootState) => state.DiscucionesReducer.Discuciones
   );
+  const Session: Usuario_INT = useSelector(
+    (state: RootState) => state.SessionReducer.MyUser
+  );
 
   const send = async (data: any) => {
     const { Asunto, menciones, mensaje } = data;
@@ -36,7 +39,7 @@ export function FromDiscucion() {
       asunto: Asunto,
       contenido: mensaje,
       pacientes: ArrayMencion(menciones),
-      id_usuario: AUTH_USER,
+      id_usuario: Session.id_usuario,
     };
 
     try {
