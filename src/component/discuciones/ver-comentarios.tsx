@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Avatar, Button, Col, Collapse, List, Row } from "antd";
-import { useSelector } from "react-redux";
+import { Alert, Avatar, Button, Col, Collapse, List, message, Row } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import { Comentario_Discucion_INT } from "../../interface";
-import { RootState } from "../../redux";
+import { RootState, Dispatch } from "../../redux";
 import moment from "moment";
+import { setComentarioDiscuciones } from "../../redux/modulos/comentario-discucion";
 import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteComentarioDiscucion } from "../../api/comentario";
 
 interface Props {
   id_discucion_mencion: string;
+  isAdmin: boolean | number | undefined;
+  id_usuario: string;
 }
 
-export function VerComentariosMencion({ id_discucion_mencion }: Props) {
+export function VerComentariosMencion({
+  id_discucion_mencion,
+  isAdmin,
+  id_usuario,
+}: Props) {
   const [isComent, setIsComent] = useState<boolean>(true);
   const { Panel } = Collapse;
+  const dispatch: Dispatch = useDispatch();
 
   const Comentarios: Array<Comentario_Discucion_INT> = useSelector(
     (state: RootState) => state.ComentariosReducer.Comentarios_Discuciones
@@ -27,6 +36,26 @@ export function VerComentariosMencion({ id_discucion_mencion }: Props) {
       setIsComent(false);
     }
   }, [Comentarios, id_discucion_mencion]);
+
+  const deleteComentario = async (id_comentario: string) => {
+    try {
+      const eliminar = await DeleteComentarioDiscucion(id_comentario);
+
+      if (eliminar.data.removed) {
+        message.success("Se elimino el comentario");
+        const index = Comentarios.findIndex(
+          (item: Comentario_Discucion_INT) =>
+            item.id_comentario_mencion === id_comentario
+        );
+        Comentarios.splice(index, 1);
+        dispatch(setComentarioDiscuciones([...Comentarios]));
+      } else {
+        message.error("Ocurrio un error al momento de eliminar el comentario");
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -52,9 +81,31 @@ export function VerComentariosMencion({ id_discucion_mencion }: Props) {
                               </u>
                             </Col>
                             <Col span={3}>
-                              <Button danger>
-                                <DeleteOutlined />
-                              </Button>
+                              {isAdmin ? (
+                                <Button
+                                  danger
+                                  onClick={() =>
+                                    deleteComentario(
+                                      coment.id_comentario_mencion
+                                    )
+                                  }
+                                >
+                                  <DeleteOutlined />
+                                </Button>
+                              ) : (
+                                coment.id_usuario === id_usuario && (
+                                  <Button
+                                    danger
+                                    onClick={() =>
+                                      deleteComentario(
+                                        coment.id_comentario_mencion
+                                      )
+                                    }
+                                  >
+                                    <DeleteOutlined />
+                                  </Button>
+                                )
+                              )}
                             </Col>
                           </Row>
                         </>

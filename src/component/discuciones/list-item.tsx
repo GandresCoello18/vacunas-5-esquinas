@@ -99,6 +99,8 @@ export function ListItem({ discucion, setSelectPaciente }: Props) {
 
               <VerComentariosMencion
                 id_discucion_mencion={discucion.id_discucion_mencion}
+                isAdmin={Session.isAdmin}
+                id_usuario={Session.id_usuario}
               />
               <CommentForm
                 id_discucion_mencion={discucion.id_discucion_mencion}

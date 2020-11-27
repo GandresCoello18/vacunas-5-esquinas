@@ -1,6 +1,8 @@
 import axios from "axios";
 import { DOMAIN } from "../config/domain";
 
+//// PETIOCION POST
+
 export const createComentario = async (
   comentario: string,
   id_usuario: string | undefined,
@@ -17,9 +19,20 @@ export const createComentario = async (
   });
 };
 
+///// PETICION GET
+
 export const getComentarioDiscucion = async () => {
   return await axios({
     method: "GET",
     url: `${DOMAIN}/api/comentario`,
+  });
+};
+
+///// PETICION DELETE
+
+export const DeleteComentarioDiscucion = async (id_comentario: string) => {
+  return await axios({
+    method: "DELETE",
+    url: `${DOMAIN}/api/comentario/${id_comentario}`,
   });
 };
