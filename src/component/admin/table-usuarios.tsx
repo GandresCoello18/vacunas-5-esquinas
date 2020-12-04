@@ -1,10 +1,25 @@
-import { UserAddOutlined, UserSwitchOutlined } from "@ant-design/icons";
-import { Alert, Button, Col, message, Modal, Row, Skeleton, Tag } from "antd";
+import {
+  DeleteOutlined,
+  StarOutlined,
+  UserSwitchOutlined,
+} from "@ant-design/icons";
+import {
+  Alert,
+  Button,
+  Col,
+  Divider,
+  message,
+  Modal,
+  Row,
+  Select,
+  Skeleton,
+  Tag,
+} from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import moment from "moment";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteUser, PutRolUser } from "../../api/usuarios";
+import { DeleteUser, PutRolUser, PutStatusser } from "../../api/usuarios";
 import { Usuario_INT } from "../../interface";
 import { RootState, Dispatch } from "../../redux";
 import { SetUsuarios } from "../../redux/modulos/usuario";
@@ -28,14 +43,18 @@ export function TablesUsuario() {
   };
 
   const dispatch: Dispatch = useDispatch();
+  const { Option } = Select;
 
   const UsuarioReducer = useSelector(
     (state: RootState) => state.UsuarioReducer
   );
 
   const [modal, setModal] = useState<boolean>(false);
+  const [modal2, setModal2] = useState<boolean>(false);
+  const [loadStatus, setLoadStatus] = useState<boolean>(false);
   const [rol, setRol] = useState<number | boolean | undefined>(0);
   const [userId, setUserId] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
 
   const deleteUser = async (id_user: string) => {
     try {
@@ -77,6 +96,27 @@ export function TablesUsuario() {
     }
   };
 
+  const updateStatus = async () => {
+    setLoadStatus(true);
+    try {
+      const resStatus = await PutStatusser(userId, status);
+
+      if (resStatus.data.update) {
+        message.success("El estado de la cuenta se actualizo");
+        dispatch(
+          SetUsuarios([...UsuarioReducer.Usuarios, ...resStatus.data.user])
+        );
+        setModal2(false);
+        setLoadStatus(false);
+      } else {
+        message.error("Ocurrio un error al cambier el estado");
+      }
+    } catch (error) {
+      message.error(error.message);
+      setLoadStatus(false);
+    }
+  };
+
   return (
     <>
       <Row justify="space-between" style={Styles.head_table}>
@@ -85,8 +125,8 @@ export function TablesUsuario() {
         <Col span={5}>Email</Col>
         <Col span={4}>Se registro</Col>
         <Col span={3}>Foto</Col>
-        <Col span={3}>Is Admin</Col>
-        <Col span={3}>Opciones</Col>
+        <Col span={2}>Is Admin</Col>
+        <Col span={4}>Opciones</Col>
       </Row>
       {UsuarioReducer.loading && <Skeleton />}
       {UsuarioReducer.Usuarios.map((user: Usuario_INT) => (
@@ -101,7 +141,7 @@ export function TablesUsuario() {
               color={
                 user.status === "registrado"
                   ? "warning"
-                  : user.status === "Bloqueado"
+                  : user.status === "bloqueado"
                   ? "red"
                   : "success"
               }
@@ -115,16 +155,16 @@ export function TablesUsuario() {
           <Col span={3}>
             <Avatar src={user.photoURL} />
           </Col>
-          <Col span={3}>
+          <Col span={2}>
             {user.isAdmin ? (
               <Tag color="green">Si</Tag>
             ) : (
               <Tag color="red">No</Tag>
             )}
           </Col>
-          <Col span={3}>
+          <Col span={4}>
             <Button danger onClick={() => deleteUser(user.id_usuario)}>
-              <UserAddOutlined />
+              <DeleteOutlined />
             </Button>
             &nbsp; &nbsp;
             <Button
@@ -136,6 +176,16 @@ export function TablesUsuario() {
               }}
             >
               <UserSwitchOutlined />
+            </Button>
+            &nbsp; &nbsp;
+            <Button
+              type="ghost"
+              onClick={() => {
+                setModal2(true);
+                setUserId(user.id_usuario);
+              }}
+            >
+              <StarOutlined />
             </Button>
           </Col>
         </Row>
@@ -179,6 +229,27 @@ export function TablesUsuario() {
           type="info"
           showIcon
         />
+      </Modal>
+
+      <Modal
+        title="Cambio de estado"
+        visible={modal2}
+        footer={false}
+        onOk={() => setModal2(false)}
+        onCancel={() => setModal2(false)}
+      >
+        <Select
+          defaultValue="bloqueado"
+          style={{ width: "100%" }}
+          onChange={(value) => setStatus(value)}
+        >
+          <Option value="bloqueado">Bloquear</Option>
+          <Option value="activo">Activar</Option>
+        </Select>
+        <Divider />
+        <Button type="primary" loading={loadStatus} onClick={updateStatus}>
+          Cambiar de estado
+        </Button>
       </Modal>
     </>
   );

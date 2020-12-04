@@ -1,4 +1,4 @@
-import { Avatar, Divider, List, Tag } from "antd";
+import { Avatar, Col, Divider, List, Row, Tag } from "antd";
 import moment from "moment";
 import React from "react";
 import { Vacuna_Paciente_Relacionado_INT } from "../../interface";
@@ -25,6 +25,29 @@ export function ListItemVacunas({ list }: Props) {
                       <Tag color="pink">{list.observaciones}</Tag>
                     )}
                   </p>
+                  <Row justify="start">
+                    <Col span={4}>
+                      <Tag color="purple">
+                        Peso: <strong>{list.peso ? list.peso : 0}</strong> KLG
+                      </Tag>
+                    </Col>
+                    <Col span={4}>
+                      <Tag color="volcano">
+                        Altura: <strong>{list.altura ? list.altura : 0}</strong>{" "}
+                        CM
+                      </Tag>
+                    </Col>
+                    <Col span={4}>
+                      <Tag color="processing">
+                        Temperatura:{" "}
+                        <strong>
+                          {list.temperatura ? list.temperatura : 0}
+                        </strong>{" "}
+                        GC
+                      </Tag>
+                    </Col>
+                  </Row>
+                  <br />
                   <strong>{moment(list.fecha_vacuna).format("LLL")}</strong>
                 </>
               }

@@ -63,18 +63,23 @@ export function LoginPage() {
     try {
       loginWithGoogle()
         .then(async (user) => {
-          dispatch(doGoogleLoginAction(user));
-          Cookies.set("id-user", user.uid);
           const resLogin = await loginUser(user);
 
-          resLogin.data.feeback
-            ? message.info(resLogin.data.feeback)
-            : message.info("Ingreso exitoso");
-
-          if (resLogin.data.usuario[0].isAdmin) {
-            history.push("/pacientes/reportes");
+          if (resLogin.data.usuario[0].status === "activo") {
+            dispatch(doGoogleLoginAction(user));
+            Cookies.set("id-user", user.uid);
+            resLogin.data.feeback
+              ? message.info(resLogin.data.feeback)
+              : message.info("Ingreso exitoso");
+            if (resLogin.data.usuario[0].isAdmin) {
+              history.push("/pacientes/reportes");
+            } else {
+              history.push("/");
+            }
           } else {
-            history.push("/");
+            message.error(
+              "Tu cuenta no esta acitva por el momento, un administrador tiene que confirmar tu cuenta."
+            );
           }
         })
         .catch((err) => {

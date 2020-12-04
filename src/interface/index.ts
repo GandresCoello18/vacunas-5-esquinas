@@ -89,6 +89,9 @@ export interface Vacuna_Paciente_Relacionado_INT {
   photoURL: string;
   isAdmin: number | boolean;
   vacuna_name: string;
+  peso: number;
+  altura: number;
+  temperatura: number;
 }
 
 export interface Mis_Vacunas_INT {

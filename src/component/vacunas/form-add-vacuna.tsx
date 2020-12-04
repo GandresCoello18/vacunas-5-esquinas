@@ -24,6 +24,7 @@ export function FormAddVacuna({ id_paciente }: Props) {
 
   const [isLoading, setiIsLoading] = useState<boolean>(false);
   const [selectPaciente, setSelectPaciente] = useState<string>("");
+  const [searchPaciente, setSearchPaciente] = useState<string>("");
   const [feedback, setFeedback] = useState<string>("");
 
   const vacunas: Array<Vacunas_INT> = useSelector(
@@ -98,28 +99,41 @@ export function FormAddVacuna({ id_paciente }: Props) {
           </Select>
         </Form.Item>
         {!id_paciente && (
-          <Form.Item
-            name="paciente"
-            label="paciente"
-            rules={[
-              {
-                required: true,
-                message: "Seleccione la vacuna.",
-              },
-            ]}
-          >
-            <Select
-              style={{ width: "100%" }}
-              placeholder="Seleccion el paciente"
-              onChange={(value: string) => setSelectPaciente(value)}
+          <>
+            <Form.Item>
+              <Input
+                type="text"
+                placeholder="Buscar pacientes"
+                onChange={(e) => setSearchPaciente(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              name="paciente"
+              label="paciente"
+              rules={[
+                {
+                  required: true,
+                  message: "Seleccione la vacuna.",
+                },
+              ]}
             >
-              {Pacientes.map((paciente) => (
-                <Option value={paciente.id_paciente}>
-                  {paciente.nombres} {paciente.apellidos}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+              <Select
+                style={{ width: "100%" }}
+                placeholder="Seleccion el paciente"
+                onChange={(value: string) => setSelectPaciente(value)}
+              >
+                {Pacientes.filter(
+                  (item) =>
+                    item.nombres.indexOf(searchPaciente) !== -1 ||
+                    item.apellidos.indexOf(searchPaciente) !== -1
+                ).map((paciente) => (
+                  <Option value={paciente.id_paciente}>
+                    {paciente.nombres} {paciente.apellidos}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </>
         )}
         <Form.Item
           name="observaciones"

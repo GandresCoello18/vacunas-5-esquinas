@@ -15,6 +15,7 @@ import { ArrayMencion } from "../../hooks/mencion-array";
 export function FromDiscucion() {
   const dispatch: Dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchMencion, setSearchMencion] = useState<string>("");
   const [form] = Form.useForm();
   const { TextArea } = Input;
   const { Option } = Mentions;
@@ -70,6 +71,13 @@ export function FromDiscucion() {
         >
           <Input type="text" placeholder="Asunto de su comentario" />
         </Form.Item>
+        <Form.Item>
+          <Input
+            type="text"
+            placeholder="Buscar pacientes"
+            onChange={(e) => setSearchMencion(e.target.value)}
+          />
+        </Form.Item>
         <Form.Item
           name="menciones"
           rules={[
@@ -84,7 +92,11 @@ export function FromDiscucion() {
             placeholder="Menciona algun paciente"
             defaultValue={Pacientes.length > 0 ? Pacientes[0].codigo : ""}
           >
-            {Pacientes.map((paciente) => (
+            {Pacientes.filter(
+              (item) =>
+                item.nombres.indexOf(searchMencion) !== -1 ||
+                item.apellidos.indexOf(searchMencion) !== -1
+            ).map((paciente) => (
               <Option value={paciente.codigo}>
                 {paciente.nombres} {paciente.apellidos}
               </Option>

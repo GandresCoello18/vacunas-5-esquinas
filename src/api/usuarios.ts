@@ -1,7 +1,7 @@
 import axios from "axios";
 import { DOMAIN } from "../config/domain";
 
-/// PETICION POST
+//// PETICION POST
 
 export const loginUser = async (user: any) => {
   return await axios({
@@ -42,5 +42,15 @@ export const PutRolUser = async (id_usuarios: string) => {
   return await axios({
     method: "PUT",
     url: `${DOMAIN}/api/usuario/rol/${id_usuarios}`,
+  });
+};
+
+export const PutStatusser = async (id_usuarios: string, status: string) => {
+  return await axios({
+    method: "PUT",
+    url: `${DOMAIN}/api/usuario/status/${id_usuarios}`,
+    data: {
+      status,
+    },
   });
 };
