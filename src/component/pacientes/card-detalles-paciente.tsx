@@ -63,8 +63,6 @@ export function CardDetallePaciente({
             </Col>
           </Row>
           <br />
-          <h4>Progreso</h4>
-          <Progress percent={50} status="active" />
         </Col>
       </Row>
       <br />
